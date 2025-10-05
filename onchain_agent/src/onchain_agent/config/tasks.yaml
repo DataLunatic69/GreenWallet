@@ -1,0 +1,502 @@
+portfolio_analysis:
+  description: >
+    Analyze wallet {wallet_address} across {networks} networks to create a comprehensive portfolio intelligence report.
+    This analysis will serve as the foundation for all subsequent tasks and recommendations.
+    
+    Follow this systematic process:
+    
+    1. Data Collection:
+       - Retrieve current portfolio holdings using the PortfolioTool
+       - Gather current token prices using the TokenPriceTool
+       - Research each significant asset's market context using the SearchTool
+    
+    2. Asset Composition Analysis:
+       - Calculate exact allocations by asset class (Layer 1, DeFi tokens, NFTs, stablecoins, etc.)
+       - Segment by market capitalization tiers (>$10B, $1-10B, $100M-1B, <$100M)
+       - Map all DeFi positions including yield-generating assets, LP tokens, and staked assets
+       - Calculate exact dollar values and percentages for each category
+    
+    3. Risk Assessment:
+       - Calculate Herfindahl-Hirschman Index (HHI) for concentration risk
+       - Determine 30-day and 90-day volatility for major holdings
+       - Analyze correlation between major assets in the portfolio
+       - Score smart contract risk based on audit status, age, and security history
+       - Quantify liquidity risk based on position size relative to pool depth
+    
+    4. Performance Analysis:
+       - Calculate 7-day, 30-day, and 90-day returns for the portfolio
+       - Compare against ETH, BTC, and sector-specific benchmarks
+       - Identify specific assets driving alpha and beta
+       - Calculate Sharpe and Sortino ratios where data is available
+       - Determine gas expenditure efficiency relative to portfolio size
+    
+    5. Anomaly Detection:
+       - Flag any positions >15% of portfolio as concentration risks
+       - Identify any unusual protocol interactions (low TVL, new protocols, etc.)
+       - Highlight tokens with extreme volatility
+       - Note any positions significantly diverging from broader market patterns
+  expected_output: >
+    # Portfolio Analysis Report for {wallet_address}
+    
+    ## 1. Executive Summary
+    * Total portfolio value (USD): [exact figure]
+    * 30-day change: [percentage with directional indicator]
+    * Key risk metrics: [HHI score, volatility metrics]
+    * Most significant findings: [3-5 bullet points of critical insights]
+    
+    ## 2. Portfolio Composition
+    * Asset allocation by class: [table with percentages and USD values]
+      - Layer 1: [%]
+      - DeFi tokens: [%]
+      - Stablecoins: [%]
+      - Other: [%]
+    * Network distribution: [breakdown across {networks}]
+    * Protocol exposure: [top protocols by value locked]
+    * Top 10 holdings: [detailed table with token, amount, USD value, % of portfolio]
+    
+    ## 3. Risk Assessment
+    * Concentration analysis: [HHI score with interpretation]
+    * Volatility profile: [portfolio volatility vs. market benchmarks]
+    * Correlation matrix: [how major holdings correlate with each other]
+    * Smart contract risk exposure: [categorized as High/Medium/Low with specific concerns]
+    * Liquidity risk assessment: [days to exit positions given current market depth]
+    
+    ## 4. Performance Analysis
+    * Period returns: [7d, 30d, 90d returns in table format]
+    * Benchmark comparison: [portfolio vs. ETH, BTC, and relevant indices]
+    * Alpha contributors: [assets outperforming their respective benchmarks]
+    * Beta exposure: [how portfolio moves with broader market]
+    * Risk-adjusted metrics: [Sharpe ratio, Sortino ratio if calculable]
+    * Gas efficiency: [gas expenses as % of portfolio and per transaction]
+    
+    ## 5. Optimization Opportunities
+    * Diversification recommendations: [specific moves to reduce concentration risk]
+    * Risk mitigation strategies: [hedging options, position sizing adjustments]
+    * Yield optimization paths: [specific protocols offering better yields for same risk]
+    * Gas efficiency improvements: [layer 2 opportunities, batching strategies]
+    * Rebalancing suggestions: [specific tokens to increase/decrease exposure]
+  agent: portfolio_intelligence_analyst
+
+transaction_pattern_analysis:
+  description: >
+    Analyze transaction patterns for wallet {wallet_address} across {networks} networks to uncover behavioral insights,
+    identify patterns, and detect anomalies that could represent risks or opportunities.
+    This analysis builds upon the portfolio analysis and adds a temporal, behavioral dimension.
+    
+    Use this structured methodology:
+    
+    1. Data Collection and Preparation:
+       - Retrieve transaction history using the TransactionHistoryTool
+       - Gather transaction details using TransactionDetailsTool
+       - Extract application-specific transactions using AppTransactionsTool
+       - Create time-series data structures for pattern analysis
+    
+    2. Temporal Pattern Analysis:
+       - Calculate daily/weekly/monthly transaction frequency distributions
+       - Identify recurring temporal cycles (e.g., weekly DCA, monthly rebalancing)
+       - Map transaction timing against market volatility events
+       - Develop a heat map of activity by time period
+       - Calculate the average time between significant transactions
+    
+    3. Behavioral Signature Extraction:
+       - Classify transactions into types (swaps, bridges, adds/removes liquidity, etc.)
+       - Calculate gas strategy metrics (fast/average/slow preferences)
+       - Identify transaction size patterns and preferences
+       - Analyze DEX selection patterns and routing preferences
+       - Map entry/exit strategies during different market conditions
+    
+    4. Protocol Interaction Analysis:
+       - Create ranked list of protocols by interaction frequency and volume
+       - Calculate protocol loyalty metrics (return rate, avg time between interactions)
+       - Map capital flows between protocols
+       - Identify 'home base' protocols where funds return after exploration
+       - Calculate average time funds spend in each protocol
+    
+    5. Counterparty Network Mapping:
+       - Identify recurring counterparties (wallets, contracts)
+       - Calculate relationship strength metrics based on frequency and volume
+       - Map fund flows to known entities (CEXs, DAOs, etc.)
+       - Calculate exposure metrics to each major counterparty
+       - Determine degree of centralization in transaction network
+    
+    6. Anomaly Detection:
+       - Flag any transactions >2 standard deviations from normal in size/timing
+       - Identify unusual pattern deviations that break established behaviors
+       - Calculate MEV extraction probability for sandwich-able transactions
+       - Map front-running/back-running opportunities and historical instances
+       - Flag any transactions to addresses with security flags
+  expected_output: >
+    # Transaction Pattern Analysis for {wallet_address}
+    
+    ## 1. Activity Profile
+    * Temporal distribution: [heatmap description of activity by time]
+    * Transaction frequency: [exact figures for daily/weekly/monthly averages]
+    * Volume patterns: [typical transaction sizes with statistical ranges]
+    * Activity correlations: [relationship to market volatility events]
+    * Regularity score: [quantified measure of behavioral predictability]
+    
+    ## 2. Behavioral Signatures
+    * Transaction type breakdown: [detailed percentage allocation with tables]
+    * Primary transaction behaviors: [3-5 key behavioral patterns]
+    * Gas strategy profile: [fast/average/slow preferences with cost analysis]
+    * DEX usage patterns: [ranked list with selection criteria analysis]
+    * Timing strategies: [entry/exit timing relative to market movements]
+    
+    ## 3. Protocol Engagement
+    * Protocol usage ranking: [complete table with frequency, volume, and duration]
+    * Protocol loyalty metrics: [return rates and interaction consistency]
+    * Inter-protocol capital flows: [visualization description of major flows]
+    * Protocol preferences: [evidence-based analysis of protocol selection factors]
+    * Emerging protocol interests: [recently increasing engagement patterns]
+    
+    ## 4. Network Analysis
+    * Key counterparties: [complete list with relationship strength metrics]
+    * Entity exposure: [breakdown of funds flowing to different entity types]
+    * Relationship patterns: [recurring transaction sequences and partnerships]
+    * Centralization risk: [quantified measure of counterparty concentration]
+    * Counterparty risk assessment: [security profile of major counterparties]
+    
+    ## 5. Anomalies & Strategic Insights
+    * Detected anomalies: [specific transactions or patterns with security implications]
+    * MEV exposure: [quantified risk with specific examples]
+    * Pattern deviations: [changes in behavior with potential explanations]
+    * Strategic intelligence: [evidence-based assessment of wallet strategy]
+    * Predictive patterns: [likely future behaviors based on established patterns]
+    * Alpha-generating behaviors: [specific transaction patterns linked to outperformance]
+  agent: transaction_pattern_specialist
+
+
+
+investment_opportunity_identification:
+  description: >
+    Identify specific, actionable investment opportunities for wallet {wallet_address} across {networks}.
+    This task builds upon insights from the portfolio analysis and transaction pattern analysis
+    to deliver concrete optimization strategies with implementation steps.
+    
+    Follow this detailed methodology:
+    
+    1. Cross-Chain Arbitrage Identification:
+       - Use the PortfolioTool to analyze current holdings across chains
+       - Compare asset prices across {networks} for the same tokens
+       - Calculate arbitrage spreads accounting for gas and bridge fees
+       - Identify liquidity imbalances that create arbitrage opportunities
+       - Score opportunities by profitability, execution complexity, and time sensitivity
+       - Determine optimal bridging pathways for capital movement
+    
+    2. Portfolio Optimization Analysis:
+       - Calculate efficient frontier for current asset mix
+       - Compare current allocations against optimal allocations
+       - Identify underweight and overweight positions relative to risk/return profile
+       - Calculate expected improvement in returns from rebalancing
+       - Score rebalancing moves by expected impact on portfolio performance
+       - Develop prioritized rebalancing schedule with specific token amounts
+    
+    3. Yield Optimization Strategy:
+       - Map all current yield-bearing positions across the portfolio
+       - Research alternative protocols offering better yields for similar assets
+       - Compare risk-adjusted returns accounting for protocol security factors
+       - Calculate impermanent loss risk for LP positions
+       - Identify liquidity mining opportunities with favorable tokenomics
+       - Score yield opportunities by APY improvement, risk level, and longevity
+    
+    4. Risk Management Strategy Development:
+       - Identify major portfolio vulnerabilities from concentration risk
+       - Research hedging instruments available for major positions
+       - Calculate optimal hedge ratios for downside protection
+       - Identify options/futures strategies for volatility management
+       - Develop correlation-based diversification opportunities
+       - Score risk management moves by cost-effectiveness and protection level
+    
+    5. Implementation Planning:
+       - Sequence all identified opportunities by priority and logical order
+       - Calculate exact token amounts for each recommended action
+       - Develop step-by-step execution instructions
+       - Identify key monitoring metrics for each implemented strategy
+       - Calculate total expected improvement in portfolio performance
+  expected_output: >
+    # Investment Opportunity Analysis for {wallet_address}
+    
+    ## 1. Executive Summary
+    * Comprehensive opportunity overview: [total expected value-add]
+    * Top 3 priority opportunities: [ranked list with specific metrics]
+    * Risk/return projection: [expected improvement with confidence intervals]
+    * Implementation timeline: [high-level schedule for recommended actions]
+    
+    ## 2. Cross-Chain Arbitrage Opportunities
+    * Current arbitrage spreads: [detailed table with exact token prices across chains]
+    * Execution pathways: [step-by-step instructions with exact contract addresses]
+    * Net profit calculations: [spreads minus gas/bridge fees with exact figures]
+    * Timing considerations: [volatility risk and recommended execution window]
+    * Bridging recommendations: [specific bridges with fee comparisons]
+    
+    ## 3. Portfolio Optimization Strategy
+    * Efficient frontier analysis: [current vs. optimal risk/return positioning]
+    * Allocation recommendations: [detailed rebalancing table with exact token amounts]
+    * Underweight positions: [specific tokens to increase with target allocations]
+    * Overweight positions: [specific tokens to decrease with target allocations]
+    * Expected performance improvement: [quantified projection with methodology]
+    
+    ## 4. Yield Enhancement Opportunities
+    * Current yield map: [complete table of all yield-bearing positions]
+    * Protocol opportunities: [specific alternatives with APY comparisons]
+    * Risk-adjusted yield improvements: [accounting for protocol security factors]
+    * Liquidity mining strategies: [specific pools with reward tokenomics analysis]
+    * Collateral efficiency recommendations: [lending opportunities and leverage strategies]
+    * Implementation instructions: [exact smart contract interactions required]
+    
+    ## 5. Risk Management Recommendations
+    * Hedging strategies: [specific instruments for major positions]
+    * Diversification opportunities: [correlation-based suggestions]
+    * Downside protection mechanisms: [options strategies with strike prices]
+    * volatility management tools: [specific derivative positions with ratios]
+    * Cost/benefit analysis: [protection level vs. implementation cost]
+    
+    ## 6. Implementation Plan
+    * Prioritized action steps: [sequenced list with dependencies]
+    * Gas optimization strategy: [timing and batching recommendations]
+    * Monitoring framework: [KPIs to track with specific thresholds]
+    * Contingency plans: [risk mitigation for each recommended action]
+    * Expected outcome metrics: [specific improvements to measure success]
+  agent: cross_chain_investment_strategist
+
+# This replaces the comprehensive_intelligence_report task in tasks.yaml
+
+comprehensive_intelligence_report:
+  description: >
+    Create a comprehensive, integrated intelligence report for wallet {wallet_address} that synthesizes
+    all previous analyses (portfolio, transactions, opportunities, and carbon footprint) into a cohesive 
+    strategic document with actionable recommendations.
+    
+    Follow this structured synthesis methodology: 
+    
+    1. Holistic Data Integration:
+       - Synthesize all data and insights from the portfolio analysis task
+       - Incorporate behavioral patterns from the transaction pattern analysis task
+       - Include optimization strategies from the investment opportunity identification task
+       - Integrate environmental impact data from the carbon footprint analysis task
+       - Research broader market context for comparative benchmarking using SearchTool
+       - Identify cross-task patterns and insights that weren't apparent in individual analyses
+    
+    2. Pattern Synthesis and Strategic Positioning:
+       - Map connections between portfolio composition and transaction behaviors
+       - Identify recurrent patterns that suggest strategic intent
+       - Determine if transaction timing correlates with market conditions
+       - Categorize the wallet's apparent strategy (DeFi yield farmer, long-term holder, etc.)
+       - Calculate strategy consistency score based on behavior patterns
+       - Compare strategy effectiveness against optimal behavior models
+       - Assess environmental consciousness based on network and transaction patterns
+    
+    3. Performance Benchmarking:
+       - Compare wallet performance metrics against relevant peer groups
+       - Benchmark against market indices and sector-specific metrics
+       - Determine relative performance percentile
+       - Identify specific strategy components that over/underperformed
+       - Calculate attribution of performance to skill vs. market factors
+       - Project performance under different market scenarios
+    
+    4. Comprehensive Risk Assessment:
+       - Aggregate all risk factors from previous analyses
+       - Calculate integrated risk score across dimensions (concentration, smart contract, carbon, etc.)
+       - Map interconnected risk factors that could create cascading failures
+       - Quantify potential downside scenarios with probability estimates
+       - Score overall risk management effectiveness
+       - Identify highest priority risk mitigation opportunities
+       - Include environmental/regulatory risks related to carbon footprint
+    
+    5. Strategic Relationship Mapping:
+       - Create network map of key counterparties and protocols
+       - Identify potential strategic partnerships or alignments
+       - Map capital flow pathways across the ecosystem
+       - Calculate relationship strength metrics for key connections
+       - Determine potential information or influence advantages
+    
+    6. Integrated Action Plan Development:
+       - Prioritize all recommendations from previous analyses by impact and urgency
+       - Develop sequenced implementation strategy with dependencies mapped
+       - Create monitoring framework with specific KPIs and thresholds
+       - Calculate expected value-add for each recommendation
+       - Design phased approach with clear milestones
+       - Include contingency plans for adverse market scenarios
+       - Incorporate carbon reduction strategies into overall optimization plan
+  
+  expected_output: >
+    # Comprehensive Intelligence Report: {wallet_address}
+    
+    ## 1. Executive Summary
+    * Strategic classification: [wallet strategy categorization with confidence score]
+    * Performance snapshot: [key metrics vs. benchmarks with percentile ranking]
+    * Risk/opportunity matrix: [2x2 matrix description with positioning]
+    * Environmental impact score: [carbon footprint assessment with rating]
+    * Critical insights: [5-7 most important discoveries across all analyses]
+    * Value optimization potential: [quantified upside from implementing recommendations]
+    
+    ## 2. Integrated Performance Analysis
+    * Consolidated performance metrics: [complete table with absolute and relative figures]
+    * Peer comparison: [percentile rankings across multiple metrics]
+    * Alpha/beta attribution: [breakdown of returns by source]
+    * Strategy effectiveness: [quantitative assessment vs. optimal behavior]
+    * Performance projections: [forward-looking scenarios with probabilities]
+    * Missed opportunity analysis: [quantification of value lost from suboptimal decisions]
+    
+    ## 3. Behavioral Profile & Strategy Assessment
+    * Decision pattern analysis: [recurring behaviors with significance scores]
+    * Risk tolerance quantification: [measured across multiple dimensions]
+    * Timing effectiveness: [entry/exit timing relative to market movements]
+    * Adaptability metrics: [response patterns to market changes]
+    * Environmental consciousness: [assessment of sustainable Web3 practices]
+    * Competitive advantages: [unique strategies or positioning identified]
+    * Strategy consistency: [adherence to apparent investment thesis]
+    
+    ## 4. Relationship & Influence Map
+    * Core ecosystem positioning: [visualization description of network centrality]
+    * Key counterparty analysis: [detailed assessment of most important relationships]
+    * Capital flow dynamics: [major pathways and velocity metrics]
+    * Influence assessment: [potential information advantages]
+    * Strategic relationship opportunities: [specific protocols or entities to engage]
+    * Competitive intelligence: [positioning relative to similar wallets]
+    
+    ## 5. Integrated Risk Assessment
+    * Comprehensive risk dashboard: [all identified risks with severity and probability]
+    * Systemic vulnerabilities: [interconnected risks with cascade potential]
+    * Concentration exposure: [multi-dimensional concentration analysis]
+    * Security assessment: [smart contract risk, operational security, etc.]
+    * Environmental/regulatory risks: [carbon footprint regulatory exposure]
+    * Black swan scenarios: [extreme downside cases with mitigation options]
+    * Risk management effectiveness score: [measured against best practices]
+    
+    ## 6. Environmental Impact Assessment
+    * Carbon footprint summary: [total emissions with context]
+    * Network efficiency analysis: [emissions by blockchain network]
+    * Sustainability score: [rating based on network choices and transaction patterns]
+    * Carbon reduction opportunities: [specific strategies with impact projections]
+    * Regulatory risk assessment: [potential exposure to carbon-related regulations]
+    * Industry benchmarking: [comparison to average crypto user carbon footprint]
+    
+    ## 7. Strategic Action Plan
+    * Prioritized opportunities: [ranked list with impact, complexity, and timeframe]
+    * Quick wins: [immediate, high-impact, low-complexity actions]
+    * Strategic initiatives: [longer-term, high-value optimization paths]
+    * Carbon reduction roadmap: [phased approach to environmental sustainability]
+    * Implementation roadmap: [phased approach with dependencies and milestones]
+    * Monitoring framework: [specific KPIs, thresholds, and review cadence]
+    * Adaptive strategy guidelines: [decision trees for different market conditions]
+    
+    ## 8. Integrated Value Proposition
+    * Total optimization potential: [combined value from all recommendations]
+    * Risk-adjusted return improvement: [expected enhancement to risk/return profile]
+    * Carbon neutrality pathway: [timeline and cost to achieve net-zero emissions]
+    * Competitive positioning: [how implementing recommendations improves market position]
+    * Long-term sustainability: [environmental and financial sustainability outlook]
+  
+  agent: strategic_intelligence_synthesizer
+
+
+carbon_footprint_analysis:
+  description: >
+    Perform comprehensive carbon footprint analysis for wallet {wallet_address} based on 
+    transaction patterns identified in the transaction pattern analysis. This analysis will
+    quantify environmental impact and provide actionable reduction strategies.
+    
+    Follow this systematic methodology:
+    
+    1. Data Extraction from Previous Analysis:
+       - Extract total transaction count from transaction pattern analysis
+       - Identify network distribution (count of transactions per network)
+       - Classify transaction types where possible (swaps, transfers, DeFi interactions, etc.)
+       - Note any patterns that indicate high-emission activities
+    
+    2. Carbon Footprint Calculation:
+       - Use the CarbonFootprintTool to calculate emissions for each network
+       - Apply transaction type multipliers for different operation complexities
+       - Calculate total CO2 emissions in kilograms
+       - Calculate total energy consumption in kilowatt-hours
+       - Compute emissions per transaction average
+    
+    3. Comparative Analysis:
+       - Compare emissions across different networks used
+       - Identify highest-emission networks in the portfolio
+       - Calculate what percentage of emissions come from each network
+       - Benchmark against industry averages for similar activity levels
+    
+    4. Environmental Context:
+       - Translate emissions into relatable equivalents (trees, car miles, etc.)
+       - Assess the overall environmental impact severity
+       - Identify any unusually high-emission patterns or behaviors
+    
+    5. Reduction Strategy Development:
+       - Analyze potential for Layer 2 migration based on current network usage
+       - Identify batching opportunities from transaction patterns
+       - Calculate potential emission reductions for each strategy
+       - Estimate costs for carbon offset programs
+       - Prioritize strategies by impact, feasibility, and cost
+    
+    6. Future Projections:
+       - Project annual emissions if current patterns continue
+       - Estimate emission reductions if strategies are implemented
+       - Calculate long-term environmental and cost benefits
+  
+  expected_output: >
+    # Carbon Footprint Analysis for {wallet_address}
+    
+    ## 1. Emission Summary
+    * Total transactions analyzed: [exact count]
+    * Total CO2 emissions: [kg CO2 and metric tons]
+    * Total energy consumed: [kWh]
+    * Average emissions per transaction: [kg CO2/tx]
+    * Analysis period: [timeframe based on transaction data]
+    
+    ## 2. Network Distribution
+    * Emissions by network: [detailed table with network, transaction count, CO2, energy]
+    * Highest-emission network: [network name with percentage of total]
+    * Lowest-emission network: [network name with percentage of total]
+    * Network efficiency ranking: [ordered list by emissions per transaction]
+    
+    ## 3. Environmental Context
+    * Equivalent metrics:
+      - Trees needed for 1 year to offset: [number]
+      - Kilometers driven in average car: [number]
+      - Smartphone charges: [number]
+      - LED bulb hours: [number]
+    * Comparative assessment: [comparison to average crypto user]
+    * Severity rating: [Low/Moderate/High/Very High]
+    
+    ## 4. Transaction Type Analysis
+    * Emission breakdown by transaction type: [if data available]
+    * High-impact operations identified: [specific transaction types]
+    * Optimization opportunities: [specific transaction patterns that could be improved]
+    
+    ## 5. Reduction Strategies (Prioritized)
+    
+    ### High Priority
+    * Strategy 1: [name]
+      - Description: [detailed explanation]
+      - Potential reduction: [kg CO2 and percentage]
+      - Implementation difficulty: [easy/medium/hard]
+      - Cost estimate: [if applicable]
+      - Expected timeline: [immediate/short-term/long-term]
+    
+    ### Medium Priority
+    * Strategy 2-3: [same format as above]
+    
+    ### Low Priority
+    * Strategy 4+: [same format as above]
+    
+    ## 6. Actionable Recommendations
+    * Immediate actions: [3-5 specific steps that can be taken now]
+    * Short-term goals (1-3 months): [strategic changes to implement]
+    * Long-term sustainability plan: [comprehensive approach to carbon neutrality]
+    
+    ## 7. Impact Projections
+    * Current trajectory (annual): [projected emissions if patterns continue]
+    * With recommended strategies: [projected emissions after implementation]
+    * Total potential reduction: [kg CO2 and percentage saved annually]
+    * Carbon offset cost comparison: [cost to offset vs. cost to reduce]
+    * Return on investment: [environmental and financial benefits]
+    
+    ## 8. Monitoring Framework
+    * Key metrics to track: [specific KPIs for carbon footprint]
+    * Recommended tracking frequency: [monthly/quarterly]
+    * Benchmark targets: [specific emission reduction goals]
+    * Tools and resources: [specific platforms or tools to monitor carbon footprint]
+  
+  agent: carbon_footprint_analyst

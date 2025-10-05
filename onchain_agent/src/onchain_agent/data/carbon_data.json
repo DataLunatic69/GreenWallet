@@ -1,0 +1,125 @@
+{
+    "networks": {
+      "ethereum": {
+        "name": "Ethereum",
+        "consensus": "proof_of_stake",
+        "co2_per_transaction_kg": 0.0001,
+        "energy_per_transaction_kwh": 0.0002,
+        "annual_emissions_tons": 870,
+        "last_updated": "2025-01-01"
+      },
+      "polygon": {
+        "name": "Polygon",
+        "consensus": "proof_of_stake",
+        "co2_per_transaction_kg": 0.00009,
+        "energy_per_transaction_kwh": 0.00018,
+        "annual_emissions_tons": 156,
+        "last_updated": "2025-01-01"
+      },
+      "optimism": {
+        "name": "Optimism",
+        "consensus": "layer_2_rollup",
+        "co2_per_transaction_kg": 0.00005,
+        "energy_per_transaction_kwh": 0.0001,
+        "annual_emissions_tons": 45,
+        "last_updated": "2025-01-01"
+      },
+      "arbitrum": {
+        "name": "Arbitrum",
+        "consensus": "layer_2_rollup",
+        "co2_per_transaction_kg": 0.00005,
+        "energy_per_transaction_kwh": 0.0001,
+        "annual_emissions_tons": 52,
+        "last_updated": "2025-01-01"
+      },
+      "base": {
+        "name": "Base",
+        "consensus": "layer_2_rollup",
+        "co2_per_transaction_kg": 0.00005,
+        "energy_per_transaction_kwh": 0.0001,
+        "annual_emissions_tons": 38,
+        "last_updated": "2025-01-01"
+      },
+      "bsc": {
+        "name": "BNB Smart Chain",
+        "consensus": "proof_of_stake",
+        "co2_per_transaction_kg": 0.00012,
+        "energy_per_transaction_kwh": 0.00024,
+        "annual_emissions_tons": 234,
+        "last_updated": "2025-01-01"
+      },
+      "avalanche": {
+        "name": "Avalanche",
+        "consensus": "proof_of_stake",
+        "co2_per_transaction_kg": 0.0001,
+        "energy_per_transaction_kwh": 0.0002,
+        "annual_emissions_tons": 189,
+        "last_updated": "2025-01-01"
+      }
+    },
+    "transaction_types": {
+      "simple_transfer": {
+        "multiplier": 1.0,
+        "description": "Basic token transfer"
+      },
+      "swap": {
+        "multiplier": 1.5,
+        "description": "DEX swap operation"
+      },
+      "liquidity_add": {
+        "multiplier": 2.0,
+        "description": "Adding liquidity to pool"
+      },
+      "liquidity_remove": {
+        "multiplier": 2.0,
+        "description": "Removing liquidity from pool"
+      },
+      "nft_mint": {
+        "multiplier": 2.5,
+        "description": "NFT minting"
+      },
+      "nft_transfer": {
+        "multiplier": 1.2,
+        "description": "NFT transfer"
+      },
+      "contract_deployment": {
+        "multiplier": 5.0,
+        "description": "Smart contract deployment"
+      },
+      "complex_defi": {
+        "multiplier": 3.0,
+        "description": "Complex DeFi interaction"
+      }
+    },
+    "offset_strategies": {
+      "layer_2_migration": {
+        "name": "Migrate to Layer 2 Networks",
+        "potential_reduction_percent": 50,
+        "description": "Use L2 networks like Optimism, Arbitrum, or Base for transactions",
+        "implementation_difficulty": "medium"
+      },
+      "batch_transactions": {
+        "name": "Batch Multiple Transactions",
+        "potential_reduction_percent": 30,
+        "description": "Combine multiple operations into single transactions when possible",
+        "implementation_difficulty": "easy"
+      },
+      "carbon_credits": {
+        "name": "Purchase Carbon Offsets",
+        "cost_per_ton_usd": 15,
+        "description": "Offset emissions through verified carbon credit programs",
+        "implementation_difficulty": "easy"
+      },
+      "gas_optimization": {
+        "name": "Optimize Gas Usage",
+        "potential_reduction_percent": 20,
+        "description": "Use gas-efficient contracts and transaction timing",
+        "implementation_difficulty": "medium"
+      },
+      "green_validators": {
+        "name": "Support Green Validators",
+        "description": "Delegate to validators using renewable energy",
+        "implementation_difficulty": "easy"
+      }
+    }
+  }
