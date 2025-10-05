@@ -7,7 +7,7 @@ class ZapperBase:
     """Base class for Zapper API tools with common functionality."""
     
     # GraphQL API endpoint
-    GRAPHQL_API_URL = "https://public.zapper.xyz/graphql"
+    GRAPHQL_API_URL = "https://api.zapper.fi/graphql"
     
     # Network ID mapping (network name to chain ID)
     NETWORK_IDS = {

@@ -12,57 +12,203 @@ import re
 onchain_agent_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "onchain_agent", "src")
 sys.path.append(onchain_agent_path)
 
-# Import after path is set
 from onchain_agent.crew import OnchainAgentCrew
 
-# Load environment variables
 load_dotenv()
 
-# Configure the page with custom theme
+# Configure the page
 st.set_page_config(
-    page_title="Onchain AI Agent",
+    page_title="Onchain AI Agent - Carbon Analytics",
     page_icon="🌍",
     layout="wide",
     initial_sidebar_state="expanded"
 )
 
-# Custom CSS for better styling
+# Enhanced CSS (same as before)
 st.markdown("""
 <style>
-    .main-header {
-        text-align: center;
-        padding: 1rem 0;
-        background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
-        color: white;
-        border-radius: 10px;
+    @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+    
+    .main {
+        background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 50%, #0f1419 100%);
+        font-family: 'Inter', sans-serif;
+    }
+    
+    .hero-header {
+        position: relative;
+        padding: 4rem 2rem;
+        background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(79, 70, 229, 0.1) 100%),
+                    url('https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=1200&h=400&fit=crop') center/cover;
+        border-radius: 20px;
         margin-bottom: 2rem;
+        overflow: hidden;
+        box-shadow: 0 20px 60px rgba(16, 185, 129, 0.3);
     }
+    
+    .hero-header::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(135deg, rgba(6, 78, 59, 0.95) 0%, rgba(49, 46, 129, 0.95) 100%);
+        z-index: 1;
+    }
+    
+    .hero-content {
+        position: relative;
+        z-index: 2;
+        text-align: center;
+        color: white;
+    }
+    
+    .hero-title {
+        font-family: 'Space Grotesk', sans-serif;
+        font-size: 3.5rem;
+        font-weight: 700;
+        background: linear-gradient(135deg, #10b981 0%, #6366f1 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 1rem;
+        animation: glow 2s ease-in-out infinite alternate;
+    }
+    
+    @keyframes glow {
+        from { filter: drop-shadow(0 0 5px rgba(16, 185, 129, 0.5)); }
+        to { filter: drop-shadow(0 0 20px rgba(16, 185, 129, 0.8)); }
+    }
+    
+    .hero-subtitle {
+        font-size: 1.3rem;
+        color: #d1d5db;
+        font-weight: 300;
+        letter-spacing: 1px;
+    }
+    
     .metric-card {
-        background-color: #f0f2f6;
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
         padding: 1.5rem;
-        border-radius: 10px;
-        border-left: 4px solid #667eea;
+        border-radius: 16px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        transition: all 0.3s ease;
     }
-    .carbon-alert {
-        background-color: #d4edda;
-        border-left: 4px solid #28a745;
-        padding: 1rem;
-        border-radius: 5px;
-        margin: 1rem 0;
+    
+    .metric-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 12px 40px rgba(16, 185, 129, 0.3);
+        border-color: rgba(16, 185, 129, 0.5);
     }
-    .carbon-warning {
-        background-color: #fff3cd;
-        border-left: 4px solid #ffc107;
-        padding: 1rem;
-        border-radius: 5px;
-        margin: 1rem 0;
+    
+    .status-alert {
+        padding: 1.5rem;
+        border-radius: 12px;
+        margin: 1.5rem 0;
+        border-left: 4px solid;
+        backdrop-filter: blur(10px);
+        animation: slideIn 0.5s ease-out;
     }
-    .carbon-danger {
-        background-color: #f8d7da;
-        border-left: 4px solid #dc3545;
-        padding: 1rem;
-        border-radius: 5px;
-        margin: 1rem 0;
+    
+    @keyframes slideIn {
+        from { opacity: 0; transform: translateX(-20px); }
+        to { opacity: 1; transform: translateX(0); }
+    }
+    
+    .carbon-low {
+        background: rgba(16, 185, 129, 0.1);
+        border-left-color: #10b981;
+        color: #d1fae5;
+    }
+    
+    .carbon-medium {
+        background: rgba(251, 191, 36, 0.1);
+        border-left-color: #fbbf24;
+        color: #fef3c7;
+    }
+    
+    .carbon-high {
+        background: rgba(239, 68, 68, 0.1);
+        border-left-color: #ef4444;
+        color: #fee2e2;
+    }
+    
+    .stTabs [data-baseweb="tab-list"] {
+        gap: 8px;
+        background: rgba(255, 255, 255, 0.05);
+        padding: 0.5rem;
+        border-radius: 12px;
+    }
+    
+    .stTabs [data-baseweb="tab"] {
+        background: transparent;
+        border-radius: 8px;
+        color: #9ca3af;
+        font-weight: 600;
+        padding: 0.75rem 1.5rem;
+        transition: all 0.3s ease;
+    }
+    
+    .stTabs [data-baseweb="tab"]:hover {
+        background: rgba(16, 185, 129, 0.1);
+        color: #10b981;
+    }
+    
+    .stTabs [aria-selected="true"] {
+        background: linear-gradient(135deg, #10b981 0%, #6366f1 100%);
+        color: white !important;
+    }
+    
+    [data-testid="stSidebar"] {
+        background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
+    }
+    
+    .stButton > button {
+        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        padding: 0.75rem 2rem;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
+    }
+    
+    .stButton > button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(16, 185, 129, 0.6);
+    }
+    
+    [data-testid="stMetricValue"] {
+        font-size: 2rem;
+        font-weight: 700;
+        background: linear-gradient(135deg, #10b981 0%, #6366f1 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+    
+    .network-badge {
+        display: inline-block;
+        padding: 0.25rem 0.75rem;
+        background: rgba(16, 185, 129, 0.2);
+        border: 1px solid #10b981;
+        border-radius: 20px;
+        color: #10b981;
+        font-size: 0.875rem;
+        font-weight: 600;
+        margin: 0.25rem;
+    }
+    
+    .footer {
+        margin-top: 3rem;
+        padding: 2rem;
+        background: rgba(255, 255, 255, 0.02);
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 12px;
+        text-align: center;
+        color: #9ca3af;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -75,134 +221,112 @@ if "analysis_complete" not in st.session_state:
 if "report_data" not in st.session_state:
     st.session_state.report_data = None
 
-# Main header
-st.markdown('<div class="main-header"><h1>🌍 Onchain AI Agent</h1><p>Blockchain Portfolio & Carbon Footprint Analysis</p></div>', unsafe_allow_html=True)
+# Hero Header
+st.markdown("""
+<div class="hero-header">
+    <div class="hero-content">
+        <h1 class="hero-title">🌍 Onchain Carbon Analytics</h1>
+        <p class="hero-subtitle">Blockchain Portfolio Intelligence & Environmental Impact Assessment</p>
+    </div>
+</div>
+""", unsafe_allow_html=True)
 
-# Sidebar Configuration
-
-def create_sample_carbon_data():
-    """Create sample data for preview"""
-    return [
-        {'network': 'Ethereum', 'transactions': 50, 'co2_kg': 0.005},
-        {'network': 'Polygon', 'transactions': 120, 'co2_kg': 0.0108},
-        {'network': 'Base', 'transactions': 80, 'co2_kg': 0.004}
-    ]
-
-def create_network_pie_chart(network_data):
-    """Create pie chart for network emissions"""
+# Helper Functions
+def create_animated_network_chart(network_data):
+    """Create animated donut chart for network emissions"""
     if not network_data:
         return None
     
     networks = [item['network'].title() for item in network_data]
     emissions = [item['co2_kg'] for item in network_data]
     
+    colors = ['#10b981', '#6366f1', '#8b5cf6', '#ec4899', '#f59e0b']
+    
     fig = go.Figure(data=[go.Pie(
         labels=networks,
         values=emissions,
-        hole=0.4,
-        marker=dict(colors=px.colors.qualitative.Set3)
+        hole=0.6,
+        marker=dict(colors=colors[:len(networks)], line=dict(color='#0a0e27', width=2)),
+        textinfo='label+percent',
+        textfont=dict(size=14, color='white'),
+        hovertemplate='<b>%{label}</b><br>Emissions: %{value:.4f} kg CO2<extra></extra>'
     )])
     
     fig.update_layout(
-        title="CO2 Emissions by Network",
-        height=400,
-        showlegend=True
+        title={'text': 'CO2 Emissions by Network', 'font': {'size': 20, 'color': '#e2e8f0'}},
+        height=450,
+        paper_bgcolor='rgba(0,0,0,0)',
+        plot_bgcolor='rgba(0,0,0,0)',
+        showlegend=True,
+        legend=dict(font=dict(color='#e2e8f0'), bgcolor='rgba(255,255,255,0.05)'),
+        annotations=[dict(
+            text=f'{sum(emissions):.4f}<br>kg CO2',
+            x=0.5, y=0.5,
+            font=dict(size=20, color='#10b981'),
+            showarrow=False
+        )]
     )
     
     return fig
 
 def create_equivalents_chart(equivalents):
-    """Create bar chart for environmental equivalents"""
-    categories = []
-    values = []
-    
+    """Create modern bar chart for environmental equivalents"""
+    data = []
     if 'trees' in equivalents:
-        categories.append('Trees (1 year)')
-        values.append(equivalents['trees'])
+        data.append({'category': '🌳 Trees (1 year)', 'value': equivalents['trees'], 'color': '#10b981'})
     if 'km_driven' in equivalents:
-        categories.append('Km Driven')
-        values.append(equivalents['km_driven'])
+        data.append({'category': '🚗 Km Driven', 'value': equivalents['km_driven'], 'color': '#ef4444'})
     if 'smartphone_charges' in equivalents:
-        categories.append('Phone Charges')
-        values.append(equivalents['smartphone_charges'])
+        data.append({'category': '📱 Phone Charges', 'value': equivalents['smartphone_charges'], 'color': '#3b82f6'})
     if 'led_hours' in equivalents:
-        categories.append('LED Hours')
-        values.append(equivalents['led_hours'])
+        data.append({'category': '💡 LED Hours', 'value': equivalents['led_hours'], 'color': '#f59e0b'})
+    
+    categories = [d['category'] for d in data]
+    values = [d['value'] for d in data]
+    colors = [d['color'] for d in data]
     
     fig = go.Figure(data=[go.Bar(
-        x=categories,
-        y=values,
-        marker=dict(color=['#2ecc71', '#e74c3c', '#3498db', '#f39c12'])
+        y=categories,
+        x=values,
+        orientation='h',
+        marker=dict(color=colors),
+        text=[f'{v:.1f}' for v in values],
+        textposition='outside',
+        textfont=dict(color='white', size=14)
     )])
     
     fig.update_layout(
-        title="Environmental Equivalents",
-        yaxis_title="Units",
+        title={'text': 'Environmental Impact Equivalents', 'font': {'size': 20, 'color': '#e2e8f0'}},
         height=400,
-        showlegend=False
+        paper_bgcolor='rgba(0,0,0,0)',
+        plot_bgcolor='rgba(0,0,0,0)',
+        xaxis=dict(showgrid=True, gridcolor='rgba(255,255,255,0.1)', color='#9ca3af'),
+        yaxis=dict(showgrid=False, color='#e2e8f0')
     )
     
     return fig
-
-
-
-def extract_insights(report_text):
-    """Extract key insights from report"""
-    insights = {
-        'findings': [],
-        'actions': [],
-        'risks': {}
-    }
-    
-    try:
-        # Extract critical insights
-        critical_section = re.search(r'Critical insights:(.*?)(?=\n##|\*)', report_text, re.DOTALL | re.IGNORECASE)
-        if critical_section:
-            findings = re.findall(r'\d+\.\s*\*\*(.+?)\*\*', critical_section.group(1))
-            insights['findings'] = findings[:5]
-        
-        # Extract action items
-        action_section = re.search(r'Immediate actions:(.*?)(?=\n##|\*)', report_text, re.DOTALL | re.IGNORECASE)
-        if action_section:
-            actions = re.findall(r'-\s*(.+?)(?=\n-|\n\n|\Z)', action_section.group(1))
-            insights['actions'] = [a.strip() for a in actions[:5]]
-        
-        # Extract risk metrics
-        hhi_match = re.search(r'HHI.*?([0-9]+)', report_text, re.IGNORECASE)
-        if hhi_match:
-            insights['risks']['concentration'] = min(int(hhi_match.group(1)) / 100, 100)
-    
-    except Exception as e:
-        print(f"Error extracting insights: {e}")
-    
-    return insights
 
 def extract_carbon_data(report_text):
     """Extract carbon footprint data from report"""
     carbon_data = {}
     
     try:
-        # Extract total emissions
         co2_match = re.search(r'Total CO2 Emissions[:\s]+([0-9.]+)\s*kg', report_text, re.IGNORECASE)
         if co2_match:
             carbon_data['total_co2_kg'] = float(co2_match.group(1))
         
-        # Extract energy
         energy_match = re.search(r'Total Energy Consumed[:\s]+([0-9.]+)\s*kWh', report_text, re.IGNORECASE)
         if energy_match:
             carbon_data['total_energy_kwh'] = float(energy_match.group(1))
         
-        # Extract transactions
-        tx_match = re.search(r'Total Transactions[:\s]+([0-9,]+)', report_text, re.IGNORECASE)
+        tx_match = re.search(r'Total [Tt]ransactions[:\s]+([0-9,]+)', report_text, re.IGNORECASE)
         if tx_match:
             carbon_data['total_transactions'] = int(tx_match.group(1).replace(',', ''))
         
-        # Calculate average
         if carbon_data.get('total_co2_kg') and carbon_data.get('total_transactions'):
             carbon_data['avg_per_tx'] = carbon_data['total_co2_kg'] / carbon_data['total_transactions']
         
-        # Extract network data
-        network_section = re.search(r'Emissions by Network(.*?)(?=\n##|\Z)', report_text, re.DOTALL | re.IGNORECASE)
+        network_section = re.search(r'Emissions by [Nn]etwork(.*?)(?=\n##|\Z)', report_text, re.DOTALL)
         if network_section:
             network_data = []
             network_lines = re.findall(r'-\s*(\w+):\s*([0-9,]+)\s*txs.*?([0-9.]+)\s*kg\s*CO2', network_section.group(1))
@@ -214,9 +338,8 @@ def extract_carbon_data(report_text):
                 })
             carbon_data['network_data'] = network_data
         
-        # Extract equivalents
         equivalents = {}
-        trees_match = re.search(r'trees needed.*?([0-9.]+)', report_text, re.IGNORECASE)
+        trees_match = re.search(r'trees.*?([0-9.]+)', report_text, re.IGNORECASE)
         if trees_match:
             equivalents['trees'] = float(trees_match.group(1))
         
@@ -224,344 +347,204 @@ def extract_carbon_data(report_text):
         if km_match:
             equivalents['km_driven'] = float(km_match.group(1))
         
-        phone_match = re.search(r'smartphone charges.*?([0-9.]+)', report_text, re.IGNORECASE)
+        phone_match = re.search(r'smartphone.*?([0-9.]+)', report_text, re.IGNORECASE)
         if phone_match:
             equivalents['smartphone_charges'] = float(phone_match.group(1))
         
-        bulb_match = re.search(r'LED bulb.*?([0-9.]+)', report_text, re.IGNORECASE)
+        bulb_match = re.search(r'LED.*?([0-9.]+)', report_text, re.IGNORECASE)
         if bulb_match:
             equivalents['led_hours'] = float(bulb_match.group(1))
         
         if equivalents:
             carbon_data['equivalents'] = equivalents
-        
-        # Extract strategies (simplified)
-        strategies = []
-        strategy_matches = re.finditer(r'\*\*(.+?)\*\*.*?Priority:\s*(\w+).*?-\s*(.+?)(?:-|$)', report_text, re.DOTALL)
-        for match in strategy_matches:
-            strategies.append({
-                'name': match.group(1).strip(),
-                'priority': match.group(2).strip().lower(),
-                'description': match.group(3).strip()[:200]
-            })
-        
-        if strategies:
-            carbon_data['strategies'] = strategies[:5]  # Limit to top 5
     
     except Exception as e:
         print(f"Error extracting carbon data: {e}")
     
     return carbon_data if carbon_data else None
 
-
-def create_risk_gauge(risks):
-    """Create risk gauge visualization"""
-    concentration_risk = risks.get('concentration', 50)
-    
-    fig = go.Figure(go.Indicator(
-        mode="gauge+number",
-        value=concentration_risk,
-        domain={'x': [0, 1], 'y': [0, 1]},
-        title={'text': "Concentration Risk"},
-        gauge={
-            'axis': {'range': [None, 100]},
-            'bar': {'color': "darkblue"},
-            'steps': [
-                {'range': [0, 33], 'color': "lightgreen"},
-                {'range': [33, 66], 'color': "yellow"},
-                {'range': [66, 100], 'color': "red"}
-            ],
-            'threshold': {
-                'line': {'color': "red", 'width': 4},
-                'thickness': 0.75,
-                'value': 80
-            }
-        }
-    ))
-    
-    fig.update_layout(height=300)
-    st.plotly_chart(fig, use_container_width=True)
-
-
+# Sidebar
 with st.sidebar:
-    st.title("⚙️ Configuration")
+    st.markdown("### ⚙️ Configuration")
     
-    # API Keys Section
     with st.expander("🔑 API Keys", expanded=True):
-        st.info("API keys are stored in session memory only")
+        st.info("🔒 Keys stored in session only")
         
-        zapper_api_key = st.text_input(
-            "Zapper API Key",
-            type="password",
-            help="Required for blockchain data access"
-        )
-        groq_api_key = st.text_input(
-            "GROQ API Key",
-            type="password",
-            help="Required for LLM access"
-        )
+        zapper_api_key = st.text_input("Zapper API Key", type="password")
+        groq_api_key = st.text_input("Groq API Key", type="password")
+        moralis_api_key = st.text_input("Moralis API Key", type="password")
 
-        if zapper_api_key and groq_api_key:
+        if zapper_api_key and groq_api_key and moralis_api_key:
             os.environ["ZAPPER_API_KEY"] = zapper_api_key
             os.environ["GROQ_API_KEY"] = groq_api_key
+            os.environ["MORALIS_API_KEY"] = moralis_api_key
             st.session_state.api_keys_set = True
-            st.success("✅ API keys configured")
+            st.success("✅ All keys configured")
         else:
             st.session_state.api_keys_set = False
+            if not moralis_api_key:
+                st.warning("⚠️ Moralis API key required for transaction history")
     
-    # Analysis Options
-    with st.expander("🎯 Analysis Options", expanded=True):
-        include_carbon = st.checkbox("Include Carbon Footprint Analysis", value=True)
-        detailed_charts = st.checkbox("Show Detailed Charts", value=True)
-        export_format = st.selectbox("Report Format", ["Markdown", "PDF (Coming Soon)"])
+    with st.expander("🎯 Analysis Options", expanded=False):
+        networks_to_analyze = st.multiselect(
+            "Additional Networks",
+            ["polygon", "bsc", "arbitrum", "optimism", "base", "avalanche"],
+            default=[],
+            help="Ethereum is always analyzed"
+        )
     
-    # About Section
     with st.expander("ℹ️ About"):
         st.markdown("""
-        **Onchain AI Agent** provides comprehensive analysis:
+        **Streamlined Focus:**
+        - 💼 Portfolio Holdings
+        - 🔥 Gas Usage Analysis
+        - 🌍 Carbon Footprint
+        - 💡 Reduction Strategies
         
-        - 💼 Portfolio composition
-        - 📊 Transaction patterns  
-        - 🌍 Carbon footprint assessment
-        - 💡 Optimization strategies
+        **Powered by:**
+        - Moralis API (Transactions)
+        - Zapper API (Portfolio)
+        - Groq AI (Analysis)
         
         **Developer:** Emmanuel Ezeokeke
-        - [LinkedIn](https://www.linkedin.com/in/emma-ezeokeke/)
-        - [X / Twitter](https://x.com/Emarh_AI)
-        
-        Powered by CrewAI & Zapper API
+        - [LinkedIn](https://linkedin.com/in/emma-ezeokeke/)
+        - [Twitter](https://x.com/Emarh_AI)
         """)
 
-# Main Content Area
-tab1, tab2, tab3 = st.tabs(["📊 Analysis", "🌍 Carbon Dashboard", "📈 Insights"])
+# Main Tabs
+tab1, tab2 = st.tabs(["📊 Analysis & Report", "🌍 Carbon Dashboard"])
 
 with tab1:
-    st.header("Wallet Analysis")
+    st.markdown("### Wallet Analysis")
     
-    col1, col2 = st.columns([3, 1])
+    wallet_address = st.text_input(
+        "Wallet Address",
+        placeholder="0x...",
+        help="Enter EVM-compatible address (Ethereum, Polygon, BSC, etc.)"
+    )
     
-    with col1:
-        wallet_address = st.text_input(
-            "Wallet Address",
-            value="",
-            placeholder="0x...",
-            help="Enter any EVM-compatible wallet address"
-        )
+    st.markdown("<br>", unsafe_allow_html=True)
     
-    with col2:
-        networks = st.multiselect(
-            "Networks",
-            options=["ethereum", "polygon", "optimism", "arbitrum", "base", "avalanche", "bsc"],
-            default=["ethereum", "polygon", "base"],
-            help="Select blockchain networks to analyze"
-        )
-    
-    networks_str = ",".join(networks)
-    
-    # Analysis button
     run_button = st.button(
-        "🚀 Run Analysis",
+        "🚀 Run Carbon Analysis",
         type="primary",
         disabled=not st.session_state.api_keys_set,
         use_container_width=True
     )
     
     if run_button:
-        if not st.session_state.api_keys_set:
-            st.error("Please configure your API keys in the sidebar first.")
-        elif not wallet_address:
-            st.error("Please enter a wallet address.")
+        if not wallet_address:
+            st.error("Please enter a wallet address")
+        elif not wallet_address.startswith("0x"):
+            st.error("Please enter a valid EVM address (must start with 0x)")
         else:
-            inputs = {
-                'wallet_address': wallet_address,
-                'networks': networks_str
-            }
+            # Build networks string
+            base_networks = ["ethereum"]
+            all_networks = base_networks + networks_to_analyze
+            networks_str = ",".join(all_networks)
+            
+            st.markdown(' '.join([f'<span class="network-badge">{net.upper()}</span>' for net in all_networks]), unsafe_allow_html=True)
+            
+            inputs = {'wallet_address': wallet_address, 'networks': networks_str}
             
             Path("outputs").mkdir(exist_ok=True, parents=True)
             Path("memory").mkdir(exist_ok=True, parents=True)
             
-            with st.status("Running comprehensive blockchain analysis...", expanded=True) as status:
+            with st.status("🔄 Running comprehensive analysis...", expanded=True) as status:
                 try:
-                    st.write(f"Analyzing wallet: {wallet_address}")
-                    st.write(f"Networks: {networks_str}")
-                    if include_carbon:
-                        st.write("Including carbon footprint analysis...")
+                    st.write(f"**Wallet:** {wallet_address}")
+                    st.write(f"**Networks:** {networks_str}")
+                    st.write("🌍 Calculating carbon footprint from transaction gas usage...")
                     
                     crew = OnchainAgentCrew()
                     result = crew.crew().kickoff(inputs=inputs)
                     
-                    status.update(label="Analysis complete!", state="complete", expanded=False)
+                    status.update(label="✅ Analysis complete!", state="complete", expanded=False)
                     st.session_state.analysis_complete = True
                     
-                    # Parse and store report data
-                    try:
-                        with open("outputs/onchain_intelligence_report.md", "r") as f:
-                            st.session_state.report_data = f.read()
-                    except Exception as e:
-                        st.error(f"Error loading report: {str(e)}")
+                    with open("outputs/onchain_intelligence_report.md", "r") as f:
+                        st.session_state.report_data = f.read()
+                    
+                    st.balloons()
                     
                 except Exception as e:
-                    status.update(label=f"Error: {str(e)}", state="error")
+                    status.update(label=f"❌ Error: {str(e)}", state="error")
                     st.error(f"An error occurred: {str(e)}")
     
-    # Display results if analysis is complete
     if st.session_state.analysis_complete and st.session_state.report_data:
         st.markdown("---")
         st.markdown(st.session_state.report_data)
         
-        col1, col2, col3 = st.columns(3)
+        col1, col2 = st.columns(2)
         with col1:
             st.download_button(
-                label="📥 Download Report (MD)",
-                data=st.session_state.report_data,
-                file_name="onchain_intelligence_report.md",
-                mime="text/markdown",
+                "📥 Download Report (MD)",
+                st.session_state.report_data,
+                "onchain_carbon_report.md",
+                "text/markdown",
                 use_container_width=True
             )
         with col2:
             st.download_button(
-                label="📊 Export Data (JSON)",
-                data=json.dumps({"wallet": wallet_address, "networks": networks}, indent=2),
-                file_name="analysis_data.json",
-                mime="application/json",
+                "📊 Export Data (JSON)",
+                json.dumps({"wallet": wallet_address, "timestamp": str(Path("outputs/onchain_intelligence_report.md").stat().st_mtime)}, indent=2),
+                "analysis_data.json",
+                "application/json",
                 use_container_width=True
             )
 
 with tab2:
-    st.header("Carbon Footprint Dashboard")
+    st.markdown("### Carbon Footprint Dashboard")
     
     if st.session_state.analysis_complete and st.session_state.report_data:
-        # Extract carbon data from report
         carbon_section = extract_carbon_data(st.session_state.report_data)
         
-        if carbon_section:
-            # Metrics row
+        if carbon_section and carbon_section.get('total_co2_kg', 0) > 0:
             col1, col2, col3, col4 = st.columns(4)
             
             with col1:
-                st.metric(
-                    label="Total CO2 Emissions",
-                    value=f"{carbon_section.get('total_co2_kg', 0):.4f} kg",
-                    delta=f"{carbon_section.get('vs_average', 'N/A')}",
-                    delta_color="inverse"
-                )
+                st.metric("Total CO2", f"{carbon_section.get('total_co2_kg', 0):.4f} kg")
             
             with col2:
-                st.metric(
-                    label="Energy Consumed",
-                    value=f"{carbon_section.get('total_energy_kwh', 0):.4f} kWh",
-                    delta=None
-                )
+                st.metric("Energy", f"{carbon_section.get('total_energy_kwh', 0):.4f} kWh")
             
             with col3:
-                st.metric(
-                    label="Transactions",
-                    value=f"{carbon_section.get('total_transactions', 0):,}",
-                    delta=None
-                )
+                st.metric("Transactions", f"{carbon_section.get('total_transactions', 0):,}")
             
             with col4:
-                st.metric(
-                    label="Avg per Transaction",
-                    value=f"{carbon_section.get('avg_per_tx', 0):.6f} kg",
-                    delta=None
-                )
+                st.metric("Avg/Tx", f"{carbon_section.get('avg_per_tx', 0):.6f} kg")
             
-            # Charts
+            st.markdown("<br>", unsafe_allow_html=True)
+            
             col1, col2 = st.columns(2)
             
             with col1:
-                # Network emissions pie chart
                 if carbon_section.get('network_data'):
-                    fig_pie = create_network_pie_chart(carbon_section['network_data'])
+                    fig_pie = create_animated_network_chart(carbon_section['network_data'])
                     st.plotly_chart(fig_pie, use_container_width=True)
             
             with col2:
-                # Environmental equivalents
                 if carbon_section.get('equivalents'):
                     fig_equiv = create_equivalents_chart(carbon_section['equivalents'])
                     st.plotly_chart(fig_equiv, use_container_width=True)
             
-            # Reduction strategies
-            st.subheader("Carbon Reduction Strategies")
-            
-            if carbon_section.get('strategies'):
-                for idx, strategy in enumerate(carbon_section['strategies'], 1):
-                    with st.expander(f"{idx}. {strategy['name']} - {strategy.get('priority', 'medium').upper()} Priority"):
-                        st.write(strategy.get('description', ''))
-                        
-                        cols = st.columns(3)
-                        if 'potential_reduction_kg' in strategy:
-                            cols[0].metric("Potential Reduction", f"{strategy['potential_reduction_kg']:.4f} kg")
-                        if 'reduction_percent' in strategy:
-                            cols[1].metric("Reduction %", f"{strategy['reduction_percent']}%")
-                        if 'cost_usd' in strategy:
-                            cols[2].metric("Estimated Cost", f"${strategy['cost_usd']:.2f}")
-            
-            # Impact assessment
             total_co2 = carbon_section.get('total_co2_kg', 0)
             if total_co2 < 0.1:
-                alert_class = "carbon-alert"
-                icon = "✅"
-                message = "Your carbon footprint is very low! Great job maintaining minimal environmental impact."
+                st.markdown('<div class="status-alert carbon-low"><strong>✅ Excellent:</strong> Your carbon footprint is very low!</div>', unsafe_allow_html=True)
             elif total_co2 < 1.0:
-                alert_class = "carbon-warning"
-                icon = "⚠️"
-                message = "Your carbon footprint is moderate. Consider implementing some reduction strategies."
+                st.markdown('<div class="status-alert carbon-medium"><strong>⚠️ Moderate:</strong> Consider L2 migration to reduce emissions.</div>', unsafe_allow_html=True)
             else:
-                alert_class = "carbon-danger"
-                icon = "🚨"
-                message = "Your carbon footprint is significant. We strongly recommend implementing reduction strategies."
-            
-            st.markdown(f'<div class="{alert_class}"><strong>{icon} Assessment:</strong> {message}</div>', unsafe_allow_html=True)
-        
+                st.markdown('<div class="status-alert carbon-high"><strong>🚨 High Impact:</strong> Implement reduction strategies immediately.</div>', unsafe_allow_html=True)
         else:
-            st.info("No carbon footprint data available. Run an analysis with carbon footprint enabled.")
+            st.warning("⚠️ No carbon footprint data found. This could mean:")
+            st.info("• No transactions detected on analyzed networks\n• Wallet has minimal on-chain activity\n• Data extraction issue")
     else:
-        st.info("Run an analysis to see carbon footprint dashboard")
-        
-        # Show sample visualization
-        st.subheader("Sample Dashboard Preview")
-        sample_data = create_sample_carbon_data()
-        fig_sample = create_network_pie_chart(sample_data)
-        st.plotly_chart(fig_sample, use_container_width=True)
-
-with tab3:
-    st.header("Portfolio Insights & Recommendations")
-    
-    if st.session_state.analysis_complete and st.session_state.report_data:
-        # Extract key insights
-        insights = extract_insights(st.session_state.report_data)
-        
-        col1, col2 = st.columns(2)
-        
-        with col1:
-            st.subheader("Key Findings")
-            if insights.get('findings'):
-                for finding in insights['findings']:
-                    st.markdown(f"- {finding}")
-        
-        with col2:
-            st.subheader("Action Items")
-            if insights.get('actions'):
-                for action in insights['actions']:
-                    st.markdown(f"- {action}")
-        
-        # Risk assessment
-        st.subheader("Risk Dashboard")
-        if insights.get('risks'):
-            create_risk_gauge(insights['risks'])
-    else:
-        st.info("Run an analysis to see portfolio insights")
-
-# Helper functions
+        st.info("Run an analysis to see carbon footprint metrics")
 
 # Footer
-st.markdown("---")
-col1, col2, col3 = st.columns(3)
-with col1:
-    st.caption("Made with ❤️ using CrewAI and Streamlit")
-with col2:
-    st.caption("Environmental data: Post-merge Ethereum metrics")
-with col3:
-    st.caption("Version 2.0 - Carbon Edition")
+st.markdown("""
+<div class='footer'>
+    <strong style='color: #10b981;'>Powered by Moralis, Zapper & Groq AI</strong>
+    <p style='margin: 0.5rem 0 0 0;'>v2.0 Carbon Edition - Made with ❤️</p>
+</div>
+""", unsafe_allow_html=True)

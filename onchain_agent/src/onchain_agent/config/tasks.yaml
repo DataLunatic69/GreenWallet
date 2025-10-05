@@ -77,93 +77,107 @@ portfolio_analysis:
     * Rebalancing suggestions: [specific tokens to increase/decrease exposure]
   agent: portfolio_intelligence_analyst
 
-transaction_pattern_analysis:
+transaction_carbon_analysis:
   description: >
-    Analyze transaction patterns for wallet {wallet_address} across {networks} networks to uncover behavioral insights,
-    identify patterns, and detect anomalies that could represent risks or opportunities.
-    This analysis builds upon the portfolio analysis and adds a temporal, behavioral dimension.
+    Perform comprehensive analysis combining transaction patterns and carbon footprint for wallet {wallet_address} 
+    across {networks} networks. This integrated analysis provides both behavioral insights and environmental 
+    impact assessment in a single comprehensive report.
     
-    Use this structured methodology:
+    Follow this integrated methodology:
     
-    1. Data Collection and Preparation:
-       - Retrieve transaction history using the TransactionHistoryTool
-       - Gather transaction details using TransactionDetailsTool
-       - Extract application-specific transactions using AppTransactionsTool
-       - Create time-series data structures for pattern analysis
+    1. Transaction Data Collection:
+       - Retrieve transaction history using the MoralisTransactionTool
+       - Extract transaction patterns, gas usage, and network distribution
+       - Identify transaction types and frequency patterns
+       - Calculate total gas consumption across all networks
     
-    2. Temporal Pattern Analysis:
-       - Calculate daily/weekly/monthly transaction frequency distributions
-       - Identify recurring temporal cycles (e.g., weekly DCA, monthly rebalancing)
-       - Map transaction timing against market volatility events
-       - Develop a heat map of activity by time period
-       - Calculate the average time between significant transactions
+    2. Carbon Footprint Calculation:
+       - Use CarbonFootprintTool to calculate emissions based on transaction data
+       - Apply network-specific emission factors
+       - Calculate total CO2 emissions and energy consumption
+       - Determine emissions per transaction averages
     
-    3. Behavioral Signature Extraction:
-       - Classify transactions into types (swaps, bridges, adds/removes liquidity, etc.)
-       - Calculate gas strategy metrics (fast/average/slow preferences)
-       - Identify transaction size patterns and preferences
-       - Analyze DEX selection patterns and routing preferences
-       - Map entry/exit strategies during different market conditions
+    3. Pattern Analysis:
+       - Analyze temporal patterns in transaction behavior
+       - Identify high-emission transaction patterns
+       - Map network usage patterns and their environmental impact
+       - Calculate behavioral consistency metrics
     
-    4. Protocol Interaction Analysis:
-       - Create ranked list of protocols by interaction frequency and volume
-       - Calculate protocol loyalty metrics (return rate, avg time between interactions)
-       - Map capital flows between protocols
-       - Identify 'home base' protocols where funds return after exploration
-       - Calculate average time funds spend in each protocol
+    4. Environmental Optimization:
+       - Identify opportunities for emission reduction
+       - Suggest network migration strategies (Layer 2 adoption)
+       - Calculate potential carbon savings from optimization
+       - Develop sustainability improvement roadmap
     
-    5. Counterparty Network Mapping:
-       - Identify recurring counterparties (wallets, contracts)
-       - Calculate relationship strength metrics based on frequency and volume
-       - Map fund flows to known entities (CEXs, DAOs, etc.)
-       - Calculate exposure metrics to each major counterparty
-       - Determine degree of centralization in transaction network
-    
-    6. Anomaly Detection:
-       - Flag any transactions >2 standard deviations from normal in size/timing
-       - Identify unusual pattern deviations that break established behaviors
-       - Calculate MEV extraction probability for sandwich-able transactions
-       - Map front-running/back-running opportunities and historical instances
-       - Flag any transactions to addresses with security flags
+    5. Integrated Insights:
+       - Correlate transaction patterns with environmental impact
+       - Identify behavioral changes that could reduce carbon footprint
+       - Provide actionable recommendations for both optimization and sustainability
   expected_output: >
-    # Transaction Pattern Analysis for {wallet_address}
+    # Integrated Transaction & Carbon Analysis for {wallet_address}
     
-    ## 1. Activity Profile
-    * Temporal distribution: [heatmap description of activity by time]
-    * Transaction frequency: [exact figures for daily/weekly/monthly averages]
-    * Volume patterns: [typical transaction sizes with statistical ranges]
-    * Activity correlations: [relationship to market volatility events]
-    * Regularity score: [quantified measure of behavioral predictability]
+    ## 1. Transaction Summary
+    * Total transactions analyzed: [exact count]
+    * Networks used: [list with transaction counts per network]
+    * Total gas consumed: [sum across all networks]
+    * Average gas per transaction: [calculated average]
+    * Analysis timeframe: [period covered by transaction data]
     
-    ## 2. Behavioral Signatures
-    * Transaction type breakdown: [detailed percentage allocation with tables]
-    * Primary transaction behaviors: [3-5 key behavioral patterns]
-    * Gas strategy profile: [fast/average/slow preferences with cost analysis]
-    * DEX usage patterns: [ranked list with selection criteria analysis]
-    * Timing strategies: [entry/exit timing relative to market movements]
+    ## 2. Carbon Footprint Assessment
+    * Total CO2 emissions: [kg CO2 and metric tons]
+    * Total energy consumed: [kWh]
+    * Emissions by network: [detailed breakdown]
+    * Highest-emission network: [network with most environmental impact]
+    * Environmental impact rating: [Low/Moderate/High/Very High]
     
-    ## 3. Protocol Engagement
-    * Protocol usage ranking: [complete table with frequency, volume, and duration]
-    * Protocol loyalty metrics: [return rates and interaction consistency]
-    * Inter-protocol capital flows: [visualization description of major flows]
-    * Protocol preferences: [evidence-based analysis of protocol selection factors]
-    * Emerging protocol interests: [recently increasing engagement patterns]
+    ## 3. Transaction Pattern Analysis
+    * Transaction frequency patterns: [daily/weekly/monthly breakdown]
+    * Peak activity periods: [times of highest transaction volume]
+    * Transaction type distribution: [swaps, transfers, DeFi interactions, etc.]
+    * Gas strategy analysis: [fast/average/slow transaction preferences]
+    * Network usage patterns: [preferred networks and usage reasons]
     
-    ## 4. Network Analysis
-    * Key counterparties: [complete list with relationship strength metrics]
-    * Entity exposure: [breakdown of funds flowing to different entity types]
-    * Relationship patterns: [recurring transaction sequences and partnerships]
-    * Centralization risk: [quantified measure of counterparty concentration]
-    * Counterparty risk assessment: [security profile of major counterparties]
+    ## 4. Environmental Context
+    * Equivalent metrics:
+      - Trees needed for 1 year to offset: [number]
+      - Kilometers driven in average car: [number]
+      - Smartphone charges: [number]
+    * Comparison to average crypto user: [relative environmental impact]
+    * Severity assessment: [overall environmental impact rating]
     
-    ## 5. Anomalies & Strategic Insights
-    * Detected anomalies: [specific transactions or patterns with security implications]
-    * MEV exposure: [quantified risk with specific examples]
-    * Pattern deviations: [changes in behavior with potential explanations]
-    * Strategic intelligence: [evidence-based assessment of wallet strategy]
-    * Predictive patterns: [likely future behaviors based on established patterns]
-    * Alpha-generating behaviors: [specific transaction patterns linked to outperformance]
-  agent: transaction_pattern_specialist
+    ## 5. Optimization Opportunities
+    ### High Priority (Immediate Impact)
+    * Network migration opportunities: [specific Layer 2 recommendations]
+    * Transaction batching potential: [gas optimization strategies]
+    * High-emission pattern identification: [specific behaviors to modify]
+    
+    ### Medium Priority (Strategic Changes)
+    * Protocol switching recommendations: [more efficient alternatives]
+    * Timing optimization: [when to execute transactions for lower fees/emissions]
+    * Cross-chain strategy improvements: [more efficient bridging options]
+    
+    ### Low Priority (Long-term Planning)
+    * Infrastructure upgrades: [tools and platforms for sustainability]
+    * Carbon offset strategies: [compensation mechanisms]
+    * Monitoring and tracking improvements: [ongoing sustainability metrics]
+    
+    ## 6. Actionable Recommendations
+    * Immediate actions (next 7 days): [3-5 specific steps]
+    * Short-term goals (1-3 months): [strategic changes]
+    * Long-term sustainability plan: [comprehensive roadmap]
+    
+    ## 7. Impact Projections
+    * Current annual emissions: [projected if patterns continue]
+    * With recommended optimizations: [projected after implementation]
+    * Total potential reduction: [kg CO2 and percentage saved annually]
+    * Cost-benefit analysis: [environmental vs. financial considerations]
+    
+    ## 8. Monitoring Framework
+    * Key metrics to track: [specific KPIs for ongoing monitoring]
+    * Recommended tracking frequency: [how often to review]
+    * Benchmark targets: [specific goals to achieve]
+    * Tools and resources: [platforms for ongoing carbon tracking]
+  agent: transaction_carbon_analyst
 
 
 
@@ -257,7 +271,7 @@ investment_opportunity_identification:
     * Monitoring framework: [KPIs to track with specific thresholds]
     * Contingency plans: [risk mitigation for each recommended action]
     * Expected outcome metrics: [specific improvements to measure success]
-  agent: cross_chain_investment_strategist
+  agent: portfolio_intelligence_analyst
 
 # This replaces the comprehensive_intelligence_report task in tasks.yaml
 
@@ -499,4 +513,4 @@ carbon_footprint_analysis:
     * Benchmark targets: [specific emission reduction goals]
     * Tools and resources: [specific platforms or tools to monitor carbon footprint]
   
-  agent: carbon_footprint_analyst
+  agent: transaction_carbon_analyst
