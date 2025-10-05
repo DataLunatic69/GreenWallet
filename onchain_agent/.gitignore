@@ -2,3 +2,8 @@ __pycache__/
 .DS_Store
 .env
 .venv
+uv.lock
+myenv/
+memory/
+outputs/
+test_api.py

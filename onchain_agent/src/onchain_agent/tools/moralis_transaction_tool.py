@@ -110,6 +110,16 @@ class MoralisTransactionTool(BaseTool):
         if not data or "result" not in data:
             return f"No transaction history found for {address} on {chain}."
         
+        # Ensure all text is properly encoded
+        def safe_str(value):
+            """Convert value to string with proper encoding handling."""
+            if value is None:
+                return "Unknown"
+            try:
+                return str(value).encode('utf-8', errors='ignore').decode('utf-8')
+            except:
+                return "Unknown"
+        
         transactions = data.get("result", [])
         
         if not transactions:
@@ -160,7 +170,7 @@ class MoralisTransactionTool(BaseTool):
             else:
                 time_str = "Unknown time"
             
-            tx_hash = tx.get("hash", "Unknown")[:16] + "..."
+            tx_hash = safe_str(tx.get("hash", "Unknown"))[:16] + "..."
             gas_used = int(tx.get("receipt_gas_used", 0))
             value_wei = int(tx.get("value", "0"))
             value_eth = value_wei / 1e18
@@ -170,7 +180,7 @@ class MoralisTransactionTool(BaseTool):
                 f"   Time: {time_str}",
                 f"   Gas Used: {gas_used:,}",
                 f"   Value: {value_eth:.6f} ETH",
-                f"   Block: {tx.get('block_number', 'Unknown')}"
+                f"   Block: {safe_str(tx.get('block_number', 'Unknown'))}"
             ]
             
             summary.extend(tx_summary)

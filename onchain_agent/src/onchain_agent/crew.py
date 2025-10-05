@@ -18,15 +18,18 @@ from onchain_agent.tools import (
 # Load environment variables for API keys
 import os
 load_dotenv()
-GROQ_API_KEY = os.environ.get("GROQ_API_KEY")
 
-# Configure LLM - using Groq with updated model
+# Configure LLM - using OpenAI
+OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
+if not OPENAI_API_KEY:
+    print("Warning: OPENAI_API_KEY not found in environment variables")
+
 llm = LLM(
-    model="openai/gpt-oss-20b",
-    api_key=GROQ_API_KEY,
+    model="gpt-3.5-turbo",  # Cost-effective model for your $3.80 credits
+    api_key=OPENAI_API_KEY,
     temperature=0.7,
-   
-) 
+    max_tokens=3000  # Reduced to conserve credits
+)
 
 
 @CrewBase
@@ -66,8 +69,8 @@ class OnchainAgentCrew():
                 TokenPriceTool(),
                 SearchTool()
             ],
-            max_rpm=30,
-            max_iter=8
+            max_rpm=5,   # Reduced to conserve OpenAI credits
+            max_iter=3   # Reduced to conserve OpenAI credits
         )
  
     # Transaction & Carbon Analyst Agent (Combined)
@@ -82,8 +85,8 @@ class OnchainAgentCrew():
                 CarbonFootprintTool(),
                 SearchTool() 
             ],
-            max_rpm=30,
-            max_iter=10,
+            max_rpm=5,   # Reduced to conserve OpenAI credits
+            max_iter=3,  # Reduced to conserve OpenAI credits
             llm=llm
         )
         
@@ -95,8 +98,8 @@ class OnchainAgentCrew():
             config=self.agents_config['strategic_intelligence_synthesizer'],
             verbose=True,
             llm=llm,
-            max_rpm=20,
-            max_iter=6
+            max_rpm=5,   # Reduced to conserve OpenAI credits
+            max_iter=2   # Reduced to conserve OpenAI credits
         )
 
 
@@ -144,9 +147,5 @@ class OnchainAgentCrew():
             tasks=self.tasks,
             process=Process.sequential, 
             verbose=True,
-            long_term_memory=LongTermMemory(
-                storage=ltm_sqlite_storage.LTMSQLiteStorage(
-                    db_path="memory/onchain_memory.db"
-                )
-            )
+            memory=True  # Enable both entity and long-term memory
         )

@@ -1,8 +1,9 @@
-myenv/
-.env
 __pycache__/
 .DS_Store
+.env
 .venv
-outputs/
+uv.lock
+myenv/
 memory/
+outputs/
 test_api.py

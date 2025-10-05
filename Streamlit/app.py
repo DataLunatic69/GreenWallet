@@ -8,6 +8,8 @@ import sys
 import json
 import re
 
+# Note: Encoding issues should be handled at the system level
+
 # Add the absolute path to the onchain_agent directory
 onchain_agent_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "onchain_agent", "src")
 sys.path.append(onchain_agent_path)
@@ -18,8 +20,8 @@ load_dotenv()
 
 # Configure the page
 st.set_page_config(
-    page_title="Onchain AI Agent - Carbon Analytics",
-    page_icon="🌍",
+    page_title="Green Wallet - Carbon Analytics",
+    page_icon="🌱",
     layout="wide",
     initial_sidebar_state="expanded"
 )
@@ -37,12 +39,12 @@ st.markdown("""
     .hero-header {
         position: relative;
         padding: 4rem 2rem;
-        background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(79, 70, 229, 0.1) 100%),
-                    url('https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=1200&h=400&fit=crop') center/cover;
+        background: linear-gradient(135deg, rgba(34, 197, 94, 0.1) 0%, rgba(16, 185, 129, 0.1) 100%),
+                    url('https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=1200&h=400&fit=crop') center/cover;
         border-radius: 20px;
         margin-bottom: 2rem;
         overflow: hidden;
-        box-shadow: 0 20px 60px rgba(16, 185, 129, 0.3);
+        box-shadow: 0 20px 60px rgba(34, 197, 94, 0.3);
     }
     
     .hero-header::before {
@@ -52,7 +54,7 @@ st.markdown("""
         left: 0;
         right: 0;
         bottom: 0;
-        background: linear-gradient(135deg, rgba(6, 78, 59, 0.95) 0%, rgba(49, 46, 129, 0.95) 100%);
+        background: linear-gradient(135deg, rgba(6, 78, 59, 0.95) 0%, rgba(16, 185, 129, 0.95) 100%);
         z-index: 1;
     }
     
@@ -67,7 +69,7 @@ st.markdown("""
         font-family: 'Space Grotesk', sans-serif;
         font-size: 3.5rem;
         font-weight: 700;
-        background: linear-gradient(135deg, #10b981 0%, #6366f1 100%);
+        background: linear-gradient(135deg, #22c55e 0%, #10b981 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
@@ -76,8 +78,8 @@ st.markdown("""
     }
     
     @keyframes glow {
-        from { filter: drop-shadow(0 0 5px rgba(16, 185, 129, 0.5)); }
-        to { filter: drop-shadow(0 0 20px rgba(16, 185, 129, 0.8)); }
+        from { filter: drop-shadow(0 0 5px rgba(34, 197, 94, 0.5)); }
+        to { filter: drop-shadow(0 0 20px rgba(34, 197, 94, 0.8)); }
     }
     
     .hero-subtitle {
@@ -225,8 +227,8 @@ if "report_data" not in st.session_state:
 st.markdown("""
 <div class="hero-header">
     <div class="hero-content">
-        <h1 class="hero-title">🌍 Onchain Carbon Analytics</h1>
-        <p class="hero-subtitle">Blockchain Portfolio Intelligence & Environmental Impact Assessment</p>
+        <h1 class="hero-title">🌱 Green Wallet</h1>
+        <p class="hero-subtitle">Sustainable Blockchain Portfolio Intelligence & Carbon Footprint Analytics</p>
     </div>
 </div>
 """, unsafe_allow_html=True)
@@ -296,7 +298,7 @@ def create_equivalents_chart(equivalents):
     )])
     
     fig.update_layout(
-        title={'text': 'Environmental Impact Equivalents', 'font': {'size': 20, 'color': '#e2e8f0'}},
+        title={'text': '🌱 Green Impact Equivalents', 'font': {'size': 20, 'color': '#e2e8f0'}},
         height=400,
         paper_bgcolor='rgba(0,0,0,0)',
         plot_bgcolor='rgba(0,0,0,0)',
@@ -371,12 +373,15 @@ with st.sidebar:
         st.info("🔒 Keys stored in session only")
         
         zapper_api_key = st.text_input("Zapper API Key", type="password")
-        groq_api_key = st.text_input("Groq API Key", type="password")
+        openai_api_key = st.text_input("OpenAI API Key", type="password", help="Using GPT-3.5-turbo for cost-effective analysis")
         moralis_api_key = st.text_input("Moralis API Key", type="password")
+        
+        if openai_api_key:
+            st.info("💰 Estimated cost per analysis: ~$0.02-0.05 (GPT-3.5-turbo)")
 
-        if zapper_api_key and groq_api_key and moralis_api_key:
+        if zapper_api_key and openai_api_key and moralis_api_key:
             os.environ["ZAPPER_API_KEY"] = zapper_api_key
-            os.environ["GROQ_API_KEY"] = groq_api_key
+            os.environ["OPENAI_API_KEY"] = openai_api_key
             os.environ["MORALIS_API_KEY"] = moralis_api_key
             st.session_state.api_keys_set = True
             st.success("✅ All keys configured")
@@ -384,6 +389,8 @@ with st.sidebar:
             st.session_state.api_keys_set = False
             if not moralis_api_key:
                 st.warning("⚠️ Moralis API key required for transaction history")
+            if not openai_api_key:
+                st.warning("⚠️ OpenAI API key required for AI analysis")
     
     with st.expander("🎯 Analysis Options", expanded=False):
         networks_to_analyze = st.multiselect(
@@ -404,7 +411,7 @@ with st.sidebar:
         **Powered by:**
         - Moralis API (Transactions)
         - Zapper API (Portfolio)
-        - Groq AI (Analysis)
+        - OpenAI GPT-3.5 Turbo (Analysis)
         
         **Developer:** Emmanuel Ezeokeke
         - [LinkedIn](https://linkedin.com/in/emma-ezeokeke/)
@@ -544,7 +551,7 @@ with tab2:
 # Footer
 st.markdown("""
 <div class='footer'>
-    <strong style='color: #10b981;'>Powered by Moralis, Zapper & Groq AI</strong>
-    <p style='margin: 0.5rem 0 0 0;'>v2.0 Carbon Edition - Made with ❤️</p>
+    <strong style='color: #22c55e;'>🌱 Green Wallet - Powered by Moralis, Zapper & OpenAI</strong>
+    <p style='margin: 0.5rem 0 0 0;'>Sustainable Blockchain Analytics v2.0 - Made with ❤️</p>
 </div>
 """, unsafe_allow_html=True)
