@@ -36,7 +36,7 @@ st.markdown("""
         font-family: 'Inter', sans-serif;
     }
     
-    /* Global text contrast fixes */
+    /* Global text contrast fixes - Force all text to be white */
     * {
         color: #ffffff !important;
     }
@@ -49,7 +49,7 @@ st.markdown("""
         color: #ffffff !important;
     }
     
-    p, div, span, li, ul, ol {
+    p, div, span, li, ul, ol, strong, em, b, i {
         color: #ffffff !important;
     }
     
@@ -59,6 +59,33 @@ st.markdown("""
     }
     
     .main .block-container * {
+        color: #ffffff !important;
+    }
+    
+    /* Override Streamlit's default text colors more aggressively */
+    .stApp {
+        color: #ffffff !important;
+    }
+    
+    .stApp * {
+        color: #ffffff !important;
+    }
+    
+    /* Specific overrides for common text elements */
+    .stText, .stText * {
+        color: #ffffff !important;
+    }
+    
+    .stSelectbox, .stSelectbox * {
+        color: #ffffff !important;
+    }
+    
+    .stTextInput, .stTextInput * {
+        color: #ffffff !important;
+    }
+    
+    /* Override any remaining grey text */
+    [style*="color: gray"], [style*="color: grey"], [style*="color: #666"], [style*="color: #999"] {
         color: #ffffff !important;
     }
     
@@ -401,7 +428,7 @@ with st.sidebar:
         zapper_api_key = st.text_input("Zapper API Key", type="password")
         openai_api_key = st.text_input("OpenAI API Key", type="password", help="Using GPT-3.5-turbo for cost-effective analysis")
         moralis_api_key = st.text_input("Moralis API Key", type="password")
-        
+
         if openai_api_key:
             st.info("💰 Estimated cost per analysis: ~$0.02-0.05 (GPT-3.5-turbo)")
 
@@ -563,7 +590,7 @@ with tab1:
             border-left: 4px solid #28a745;
             animation: fadeInUp 0.8s ease-out;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
-            color: #333333 !important;
+            color: #000000 !important;
         }
         
         .metric-card:hover {
@@ -572,7 +599,7 @@ with tab1:
         }
         
         .metric-card * {
-            color: #333333 !important;
+            color: #000000 !important;
         }
         
         .metric-card h1, .metric-card h2, .metric-card h3, .metric-card h4, .metric-card h5, .metric-card h6 {
@@ -587,7 +614,7 @@ with tab1:
             margin: 15px 0;
             animation: fadeInUp 0.8s ease-out;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
-            color: #155724 !important;
+            color: #000000 !important;
         }
         
         .highlight-box:hover {
@@ -596,7 +623,7 @@ with tab1:
         }
         
         .highlight-box * {
-            color: #155724 !important;
+            color: #000000 !important;
         }
         
         .highlight-box h1, .highlight-box h2, .highlight-box h3, .highlight-box h4, .highlight-box h5, .highlight-box h6 {
@@ -640,11 +667,11 @@ with tab1:
         
         /* Ensure all text in report containers has proper contrast */
         .report-container {
-            color: #333333 !important;
+            color: #000000 !important;
         }
         
         .report-container * {
-            color: #333333 !important;
+            color: #000000 !important;
         }
         
         .report-container h1, .report-container h2, .report-container h3, 
@@ -665,7 +692,52 @@ with tab1:
         p, div, span, li, ul, ol {
             color: #333333 !important;
         }
+        
+        /* Final override to ensure ALL text outside bubbles is white */
+        body, html, .main, .stApp, .block-container {
+            color: #ffffff !important;
+        }
+        
+        body *, html *, .main *, .stApp *, .block-container * {
+            color: #ffffff !important;
+        }
+        
+        /* Exception for headings */
+        body h1, body h2, body h3, body h4, body h5, body h6,
+        html h1, html h2, html h3, html h4, html h5, html h6,
+        .main h1, .main h2, .main h3, .main h4, .main h5, .main h6,
+        .stApp h1, .stApp h2, .stApp h3, .stApp h4, .stApp h5, .stApp h6,
+        .block-container h1, .block-container h2, .block-container h3, 
+        .block-container h4, .block-container h5, .block-container h6 {
+            color: #28a745 !important;
+        }
         </style>
+        
+        <script>
+        // JavaScript to force proper text colors
+        function forceProperTextColors() {
+            const allElements = document.querySelectorAll('*');
+            allElements.forEach(element => {
+                // Force black text inside containers/bubbles
+                if (element.closest('.metric-card') || element.closest('.highlight-box') || 
+                    element.closest('.report-container') || element.closest('.carbon-metric-enhanced')) {
+                    if (element.tagName && !['H1', 'H2', 'H3', 'H4', 'H5', 'H6'].includes(element.tagName)) {
+                        element.style.color = '#000000 !important';
+                    }
+                } else {
+                    // Force white text outside containers
+                    if (element.tagName && !['H1', 'H2', 'H3', 'H4', 'H5', 'H6'].includes(element.tagName)) {
+                        element.style.color = '#ffffff !important';
+                    }
+                }
+            });
+        }
+        
+        // Run on page load and after content updates
+        document.addEventListener('DOMContentLoaded', forceProperTextColors);
+        setTimeout(forceProperTextColors, 1000);
+        setTimeout(forceProperTextColors, 3000);
+        </script>
         """, unsafe_allow_html=True)
         
         # Report Header with Animation
@@ -697,9 +769,9 @@ with tab1:
                 animation_delay = i * 0.2  # Stagger animations by 0.2s per section
                 
                 if 'kg CO2' in content or 'carbon' in content.lower():
-                    st.markdown(f'<div class="highlight-box" style="animation-delay: {animation_delay}s;"><div style="color: #155724 !important; font-weight: 500;">{content}</div></div>', unsafe_allow_html=True)
+                    st.markdown(f'<div class="highlight-box" style="animation-delay: {animation_delay}s;"><div style="color: #000000 !important; font-weight: 500;">{content}</div></div>', unsafe_allow_html=True)
                 else:
-                    st.markdown(f'<div class="metric-card" style="animation-delay: {animation_delay}s;"><div style="color: #333333 !important; font-weight: 500;">{content}</div></div>', unsafe_allow_html=True)
+                    st.markdown(f'<div class="metric-card" style="animation-delay: {animation_delay}s;"><div style="color: #000000 !important; font-weight: 500;">{content}</div></div>', unsafe_allow_html=True)
                 
                 # Also render the content as markdown for proper formatting
                 st.markdown(content)
@@ -739,18 +811,231 @@ with tab1:
             )
 
 with tab2:
-    st.markdown("### Carbon Footprint Dashboard")
+    # Enhanced Carbon Dashboard with improved styling
+    st.markdown("""
+    <style>
+    @keyframes carbonGlow {
+        0%, 100% { 
+            box-shadow: 0 0 20px rgba(40, 167, 69, 0.3), 0 0 40px rgba(40, 167, 69, 0.1);
+        }
+        50% { 
+            box-shadow: 0 0 30px rgba(40, 167, 69, 0.5), 0 0 60px rgba(40, 167, 69, 0.2);
+        }
+    }
+    
+    @keyframes floatUp {
+        0% { transform: translateY(20px); opacity: 0; }
+        100% { transform: translateY(0); opacity: 1; }
+    }
+    
+    @keyframes pulseGreen {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+    }
+    
+    .carbon-dashboard-header {
+        background: linear-gradient(135deg, #28a745 0%, #20c997 50%, #17a2b8 100%);
+        color: white;
+        padding: 30px;
+        border-radius: 20px;
+        margin-bottom: 30px;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+        animation: floatUp 1s ease-out;
+    }
+    
+    .carbon-dashboard-header::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+        animation: pulseGreen 3s ease-in-out infinite;
+    }
+    
+    .carbon-dashboard-header h2 {
+        font-size: 2.5em;
+        margin: 0 0 10px 0;
+        font-weight: 700;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        position: relative;
+        z-index: 1;
+    }
+    
+    .carbon-dashboard-header p {
+        font-size: 1.2em;
+        margin: 0;
+        opacity: 0.9;
+        position: relative;
+        z-index: 1;
+    }
+    
+    .carbon-metric-enhanced {
+        background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+        border-radius: 20px;
+        padding: 25px;
+        margin: 15px;
+        text-align: center;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        border: 3px solid transparent;
+        background-clip: padding-box;
+        position: relative;
+        animation: floatUp 0.8s ease-out;
+        transition: all 0.3s ease;
+        overflow: hidden;
+    }
+    
+    .carbon-metric-enhanced::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(135deg, #28a745, #20c997);
+        border-radius: 20px;
+        padding: 3px;
+        mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+        mask-composite: exclude;
+        z-index: -1;
+    }
+    
+    .carbon-metric-enhanced:hover {
+        transform: translateY(-10px) scale(1.02);
+        box-shadow: 0 20px 40px rgba(40, 167, 69, 0.3);
+        animation: carbonGlow 2s ease-in-out infinite;
+    }
+    
+    .carbon-metric-enhanced h3 {
+        color: #28a745;
+        font-size: 1.1em;
+        margin: 0 0 15px 0;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+    
+    .carbon-metric-enhanced .value {
+        font-size: 2.5em;
+        font-weight: 800;
+        color: #000000 !important;
+        margin: 0;
+        text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+    }
+    
+    .carbon-metric-enhanced .unit {
+        font-size: 1em;
+        color: #000000 !important;
+        margin-top: 5px;
+        font-weight: 500;
+    }
+    
+    .carbon-impact-section {
+        background: linear-gradient(135deg, #e8f5e8 0%, #f0f8f0 100%);
+        border-radius: 20px;
+        padding: 30px;
+        margin: 30px 0;
+        border: 3px solid #28a745;
+        animation: floatUp 1.2s ease-out;
+    }
+    
+    .carbon-impact-section h3 {
+        color: #28a745;
+        text-align: center;
+        font-size: 1.8em;
+        margin-bottom: 25px;
+        font-weight: 700;
+    }
+    
+    .carbon-status-card {
+        background: white;
+        border-radius: 15px;
+        padding: 25px;
+        margin: 20px 0;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        border-left: 5px solid;
+        animation: floatUp 1s ease-out;
+        transition: transform 0.3s ease;
+    }
+    
+    .carbon-status-card:hover {
+        transform: translateY(-5px);
+    }
+    
+    .carbon-status-excellent {
+        border-left-color: #28a745;
+        background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+    }
+    
+    .carbon-status-moderate {
+        border-left-color: #ffc107;
+        background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%);
+    }
+    
+    .carbon-status-high {
+        border-left-color: #dc3545;
+        background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
+    }
+    
+    .carbon-tips-section {
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        border-radius: 20px;
+        padding: 30px;
+        margin: 30px 0;
+        border: 2px solid #28a745;
+        animation: floatUp 1.4s ease-out;
+    }
+    
+    .carbon-tips-section h4 {
+        color: #28a745;
+        font-size: 1.5em;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+    
+    .carbon-tip-item {
+        background: white;
+        border-radius: 10px;
+        padding: 15px;
+        margin: 10px 0;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        border-left: 4px solid #28a745;
+        transition: transform 0.3s ease;
+    }
+    
+    .carbon-tip-item:hover {
+        transform: translateX(10px);
+    }
+    
+    .carbon-tip-item strong {
+        color: #28a745;
+        font-weight: 600;
+    }
+    </style>
+    """, unsafe_allow_html=True)
+    
+    # Enhanced Dashboard Header
+    st.markdown("""
+    <div class="carbon-dashboard-header">
+        <h2>🌍 Carbon Footprint Dashboard</h2>
+        <p>Comprehensive environmental impact analysis of your blockchain activities</p>
+    </div>
+    """, unsafe_allow_html=True)
     
     if st.session_state.analysis_complete and st.session_state.report_data:
         carbon_section = extract_carbon_data(st.session_state.report_data)
         
         if carbon_section and carbon_section.get('total_co2_kg', 0) > 0:
+            # Enhanced Metrics with Better Styling
             col1, col2, col3, col4 = st.columns(4)
             
             with col1:
                 st.markdown(f"""
-                <div class="carbon-metric" style="animation-delay: 0s;">
-                    <h3>Total CO2 Emissions</h3>
+                <div class="carbon-metric-enhanced" style="animation-delay: 0s;">
+                    <h3>🌱 Total CO2 Emissions</h3>
                     <div class="value">{carbon_section.get('total_co2_kg', 0):.4f}</div>
                     <div class="unit">kg CO2</div>
                 </div>
@@ -758,8 +1043,8 @@ with tab2:
             
             with col2:
                 st.markdown(f"""
-                <div class="carbon-metric" style="animation-delay: 0.2s;">
-                    <h3>Energy Consumption</h3>
+                <div class="carbon-metric-enhanced" style="animation-delay: 0.2s;">
+                    <h3>⚡ Energy Consumption</h3>
                     <div class="value">{carbon_section.get('total_energy_kwh', 0):.4f}</div>
                     <div class="unit">kWh</div>
                 </div>
@@ -767,8 +1052,8 @@ with tab2:
             
             with col3:
                 st.markdown(f"""
-                <div class="carbon-metric" style="animation-delay: 0.4s;">
-                    <h3>Total Transactions</h3>
+                <div class="carbon-metric-enhanced" style="animation-delay: 0.4s;">
+                    <h3>📊 Total Transactions</h3>
                     <div class="value">{carbon_section.get('total_transactions', 0):,}</div>
                     <div class="unit">transactions</div>
                 </div>
@@ -776,14 +1061,19 @@ with tab2:
             
             with col4:
                 st.markdown(f"""
-                <div class="carbon-metric" style="animation-delay: 0.6s;">
-                    <h3>Avg per Transaction</h3>
+                <div class="carbon-metric-enhanced" style="animation-delay: 0.6s;">
+                    <h3>📈 Avg per Transaction</h3>
                     <div class="value">{carbon_section.get('avg_per_tx', 0):.6f}</div>
                     <div class="unit">kg CO2</div>
                 </div>
                 """, unsafe_allow_html=True)
             
-            st.markdown("<br>", unsafe_allow_html=True)
+            # Enhanced Charts Section
+            st.markdown("""
+            <div class="carbon-impact-section">
+                <h3>📊 Environmental Impact Visualization</h3>
+            </div>
+            """, unsafe_allow_html=True)
             
             col1, col2 = st.columns(2)
             
@@ -797,35 +1087,86 @@ with tab2:
                     fig_equiv = create_equivalents_chart(carbon_section['equivalents'])
                     st.plotly_chart(fig_equiv, use_container_width=True)
             
+            # Enhanced Status Assessment
             total_co2 = carbon_section.get('total_co2_kg', 0)
             if total_co2 < 0.1:
-                st.markdown('<div class="status-alert carbon-low"><strong>✅ Excellent:</strong> Your carbon footprint is very low!</div>', unsafe_allow_html=True)
+                st.markdown(f"""
+                <div class="carbon-status-card carbon-status-excellent">
+                    <h4 style="color: #155724; margin-top: 0;">✅ Excellent Environmental Performance</h4>
+                    <p style="color: #155724; font-size: 1.1em; margin-bottom: 0;">
+                        Your carbon footprint of <strong>{total_co2:.4f} kg CO2</strong> is remarkably low! 
+                        You're setting an excellent example for sustainable blockchain practices.
+                    </p>
+                </div>
+                """, unsafe_allow_html=True)
             elif total_co2 < 1.0:
-                st.markdown('<div class="status-alert carbon-medium"><strong>⚠️ Moderate:</strong> Consider L2 migration to reduce emissions.</div>', unsafe_allow_html=True)
+                st.markdown(f"""
+                <div class="carbon-status-card carbon-status-moderate">
+                    <h4 style="color: #856404; margin-top: 0;">⚠️ Moderate Environmental Impact</h4>
+                    <p style="color: #856404; font-size: 1.1em; margin-bottom: 0;">
+                        Your carbon footprint of <strong>{total_co2:.4f} kg CO2</strong> is moderate. 
+                        Consider migrating to Layer 2 solutions to reduce emissions further.
+                    </p>
+                </div>
+                """, unsafe_allow_html=True)
             else:
-                st.markdown('<div class="status-alert carbon-high"><strong>🚨 High Impact:</strong> Implement reduction strategies immediately.</div>', unsafe_allow_html=True)
+                st.markdown(f"""
+                <div class="carbon-status-card carbon-status-high">
+                    <h4 style="color: #721c24; margin-top: 0;">🚨 High Environmental Impact</h4>
+                    <p style="color: #721c24; font-size: 1.1em; margin-bottom: 0;">
+                        Your carbon footprint of <strong>{total_co2:.4f} kg CO2</strong> is significant. 
+                        Implement carbon reduction strategies immediately to minimize environmental impact.
+                    </p>
+                </div>
+                """, unsafe_allow_html=True)
+            
+            # Enhanced Tips Section
+            st.markdown("""
+            <div class="carbon-tips-section">
+                <h4>💡 Reduce Your Carbon Footprint</h4>
+                <div class="carbon-tip-item">
+                    <strong>🌐 Use Layer 2 Solutions:</strong> Migrate to Polygon, Arbitrum, or Optimism for 99% lower gas costs and emissions.
+                </div>
+                <div class="carbon-tip-item">
+                    <strong>📦 Batch Transactions:</strong> Combine multiple operations to reduce network congestion and gas usage.
+                </div>
+                <div class="carbon-tip-item">
+                    <strong>⚡ Choose Efficient Protocols:</strong> Select DeFi protocols with optimized smart contracts and lower gas consumption.
+                </div>
+                <div class="carbon-tip-item">
+                    <strong>🌱 Carbon Offset Programs:</strong> Consider participating in blockchain carbon offset initiatives to neutralize your impact.
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
+            
         else:
             st.markdown("""
             <div style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); 
-                        border-radius: 15px; padding: 30px; text-align: center; 
-                        border: 2px dashed #28a745;">
-                <h3 style="color: #28a745;">📊 No Carbon Data Available</h3>
-                <p style="color: #6c757d; font-size: 1.1em;">This could mean:</p>
-                <ul style="color: #6c757d; text-align: left; max-width: 400px; margin: 0 auto;">
-                    <li>No transactions detected on analyzed networks</li>
-                    <li>Wallet has minimal on-chain activity</li>
-                    <li>Data extraction issue</li>
-                </ul>
+                        border-radius: 20px; padding: 40px; text-align: center; 
+                        border: 3px dashed #28a745; animation: floatUp 1s ease-out;">
+                <h3 style="color: #28a745; font-size: 1.8em; margin-bottom: 20px;">📊 No Carbon Data Available</h3>
+                <p style="color: #6c757d; font-size: 1.2em; margin-bottom: 20px;">This could mean:</p>
+                <div style="max-width: 500px; margin: 0 auto;">
+                    <div style="background: white; border-radius: 10px; padding: 15px; margin: 10px 0; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+                        <strong style="color: #28a745;">🔍 No transactions detected</strong> on analyzed networks
+                    </div>
+                    <div style="background: white; border-radius: 10px; padding: 15px; margin: 10px 0; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+                        <strong style="color: #28a745;">📱 Minimal on-chain activity</strong> in the wallet
+                    </div>
+                    <div style="background: white; border-radius: 10px; padding: 15px; margin: 10px 0; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+                        <strong style="color: #28a745;">⚠️ Data extraction issue</strong> with API connections
+                    </div>
+                </div>
             </div>
             """, unsafe_allow_html=True)
     else:
         st.markdown("""
         <div style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); 
-                    border-radius: 15px; padding: 30px; text-align: center; 
-                    border: 2px dashed #28a745;">
-            <h3 style="color: #28a745;">🌱 Ready for Analysis</h3>
-            <p style="color: #6c757d; font-size: 1.1em;">Run a wallet analysis to see carbon footprint data</p>
-            <p style="color: #6c757d;">Your blockchain activities will be translated into environmental metrics</p>
+                    border-radius: 20px; padding: 40px; text-align: center; 
+                    border: 3px dashed #28a745; animation: floatUp 1s ease-out;">
+            <h3 style="color: #28a745; font-size: 1.8em; margin-bottom: 20px;">🌱 Ready for Analysis</h3>
+            <p style="color: #6c757d; font-size: 1.2em; margin-bottom: 20px;">Run a wallet analysis to see comprehensive carbon footprint data</p>
+            <p style="color: #6c757d; font-size: 1.1em;">Your blockchain activities will be translated into detailed environmental metrics and actionable insights</p>
         </div>
         """, unsafe_allow_html=True)
 
