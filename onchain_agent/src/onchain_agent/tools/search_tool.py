@@ -66,10 +66,10 @@ class SearchTool(BaseTool):
                     chain_id = ZapperBase.get_chain_id(network)
                     network_ids.append(chain_id)
             
-            # Create GraphQL query for searchV2 using the correct structure
+            # Create GraphQL query for search using the correct structure
             query_str = '''
-            query SearchV2($input: SearchInputV2!) {
-              searchV2(input: $input) {
+            query Search($input: SearchInput!) {
+              search(input: $input) {
                 results {
                   __typename
                   # Token fields
@@ -159,10 +159,10 @@ class SearchTool(BaseTool):
     
     def _format_search_results(self, data: Dict[str, Any], query: str) -> str:
         """Format search results into a readable string."""
-        if not data or "data" not in data or "searchV2" not in data["data"] or not data["data"]["searchV2"]["results"]:
+        if not data or "data" not in data or "search" not in data["data"] or not data["data"]["search"]["results"]:
             return f"No search results found for query: {query}"
         
-        results = data["data"]["searchV2"]["results"]
+        results = data["data"]["search"]["results"]
         
         # Format the search results
         summary = [f"Search Results for '{query}':\n"]

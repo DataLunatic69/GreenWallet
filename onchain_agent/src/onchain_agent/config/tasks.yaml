@@ -3,14 +3,15 @@ portfolio_analysis:
     Analyze wallet {wallet_address} across {networks} networks. Use PortfolioTool for holdings, 
     TokenPriceTool for prices, SearchTool for market context. Calculate allocations by asset class 
     (L1, DeFi, stablecoins), risk metrics (HHI, volatility), performance (7d/30d/90d returns vs ETH/BTC), 
-    and identify anomalies (>15% positions, unusual protocols).
+    and identify anomalies (>15% positions, unusual protocols). Include both quantitative statistics 
+    and qualitative analysis. Provide specific numbers, percentages, ratios, and metrics alongside insights.
   expected_output: >
     # Portfolio Analysis: {wallet_address}
-    ## 1. Summary: Total value, 30d change, key risks, top findings
-    ## 2. Composition: Asset allocation %, network distribution, top 10 holdings
-    ## 3. Risk: Concentration (HHI), volatility, correlation matrix, smart contract risk
-    ## 4. Performance: Returns vs benchmarks, alpha contributors, Sharpe ratio
-    ## 5. Optimization: Diversification, risk mitigation, yield optimization, rebalancing
+    ## 1. Summary: Total value ($X), 30d change (X%), key risks (HHI: X.X), top findings
+    ## 2. Composition: Asset allocation % (L1: X%, DeFi: X%), network distribution, top 10 holdings with exact values
+    ## 3. Risk: Concentration (HHI: X.X), volatility (X%), correlation matrix, smart contract risk scores
+    ## 4. Performance: Returns vs benchmarks (7d: X%, 30d: X%), alpha contributors, Sharpe ratio (X.X)
+    ## 5. Optimization: Diversification targets, risk mitigation strategies, yield optimization opportunities, rebalancing amounts
   agent: portfolio_intelligence_analyst
 
 transaction_carbon_analysis:
@@ -18,17 +19,19 @@ transaction_carbon_analysis:
     Analyze transaction patterns and carbon footprint for {wallet_address} across {networks}. 
     Use MoralisTransactionTool for transaction data, CarbonFootprintTool for emissions. 
     Calculate total gas usage, CO2 emissions by network, transaction patterns (frequency, types, timing), 
-    and provide reduction strategies (L2 migration, batching, protocol switching).
+    and provide reduction strategies (L2 migration, batching, protocol switching). Include both 
+    quantitative statistics (exact numbers, percentages, ratios) and qualitative analysis. 
+    Provide specific metrics alongside insights and recommendations.
   expected_output: >
     # Transaction & Carbon Analysis: {wallet_address}
-    ## 1. Summary: Transaction count, networks used, total gas, timeframe
-    ## 2. Carbon Footprint: Total CO2/energy, emissions by network, impact rating
-    ## 3. Patterns: Frequency, peak times, transaction types, gas strategy
-    ## 4. Context: Trees to offset, car miles equivalent, vs average user
-    ## 5. Optimization: L2 migration, batching, protocol switching (High/Medium/Low priority)
-    ## 6. Actions: Immediate (7 days), short-term (1-3 months), long-term plan
-    ## 7. Projections: Annual emissions, potential reduction, cost-benefit
-    ## 8. Monitoring: KPIs, tracking frequency, benchmarks
+    ## 1. Summary: Transaction count (X), networks used, total gas (X units), timeframe
+    ## 2. Carbon Footprint: Total CO2 (X kg), energy (X kWh), emissions by network (X%), impact rating
+    ## 3. Patterns: Frequency (X/day), peak times, transaction types (X%), gas strategy analysis
+    ## 4. Context: Trees to offset (X), car miles equivalent (X km), vs average user (X%)
+    ## 5. Optimization: L2 migration potential (X% reduction), batching opportunities, protocol switching (High/Medium/Low priority)
+    ## 6. Actions: Immediate (7 days), short-term (1-3 months), long-term plan with specific targets
+    ## 7. Projections: Annual emissions (X kg), potential reduction (X%), cost-benefit analysis
+    ## 8. Monitoring: KPIs, tracking frequency, benchmarks with specific thresholds
   agent: transaction_carbon_analyst
 
 comprehensive_intelligence_report:
@@ -36,15 +39,17 @@ comprehensive_intelligence_report:
     Synthesize portfolio and transaction analyses into strategic intelligence. Map connections 
     between holdings and behaviors, categorize strategy (DeFi farmer, holder, etc.), benchmark 
     performance vs peers, aggregate risk factors, identify relationship patterns, and create 
-    prioritized action plan with monitoring framework.
+    prioritized action plan with monitoring framework. Include both quantitative statistics 
+    (exact numbers, percentages, scores) and qualitative analysis. Provide specific metrics 
+    alongside strategic insights and recommendations.
   expected_output: >
     # Comprehensive Intelligence Report: {wallet_address}
-    ## 1. Executive: Strategy classification, performance snapshot, risk/opportunity matrix, key insights
-    ## 2. Performance: Consolidated metrics, peer comparison, alpha/beta attribution, projections
-    ## 3. Behavioral: Decision patterns, risk tolerance, timing effectiveness, environmental consciousness
+    ## 1. Executive: Strategy classification (confidence: X%), performance snapshot, risk/opportunity matrix, key insights
+    ## 2. Performance: Consolidated metrics, peer comparison (percentile: X%), alpha/beta attribution, projections
+    ## 3. Behavioral: Decision patterns, risk tolerance (score: X/10), timing effectiveness, environmental consciousness
     ## 4. Relationships: Ecosystem positioning, counterparties, capital flows, influence assessment
-    ## 5. Risk: Comprehensive dashboard, systemic vulnerabilities, concentration, security, regulatory
-    ## 6. Environmental: Carbon summary, network efficiency, sustainability score, reduction opportunities
-    ## 7. Action Plan: Prioritized opportunities, quick wins, strategic initiatives, carbon roadmap
-    ## 8. Value: Optimization potential, risk-adjusted returns, carbon neutrality pathway, sustainability
+    ## 5. Risk: Comprehensive dashboard, systemic vulnerabilities, concentration (X%), security, regulatory
+    ## 6. Environmental: Carbon summary (X kg), network efficiency, sustainability score (X/10), reduction opportunities
+    ## 7. Action Plan: Prioritized opportunities, quick wins, strategic initiatives, carbon roadmap with targets
+    ## 8. Value: Optimization potential ($X), risk-adjusted returns, carbon neutrality pathway, sustainability outlook
   agent: strategic_intelligence_synthesizer

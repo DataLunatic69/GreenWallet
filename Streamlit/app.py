@@ -36,6 +36,32 @@ st.markdown("""
         font-family: 'Inter', sans-serif;
     }
     
+    /* Global text contrast fixes */
+    * {
+        color: #ffffff !important;
+    }
+    
+    h1, h2, h3, h4, h5, h6 {
+        color: #28a745 !important;
+    }
+    
+    .stMarkdown, .stMarkdown * {
+        color: #ffffff !important;
+    }
+    
+    p, div, span, li, ul, ol {
+        color: #ffffff !important;
+    }
+    
+    /* Ensure all text outside bubbles is white */
+    .main .block-container {
+        color: #ffffff !important;
+    }
+    
+    .main .block-container * {
+        color: #ffffff !important;
+    }
+    
     .hero-header {
         position: relative;
         padding: 4rem 2rem;
@@ -400,23 +426,7 @@ with st.sidebar:
             help="Ethereum is always analyzed"
         )
     
-    with st.expander("ℹ️ About"):
-        st.markdown("""
-        **Streamlined Focus:**
-        - 💼 Portfolio Holdings
-        - 🔥 Gas Usage Analysis
-        - 🌍 Carbon Footprint
-        - 💡 Reduction Strategies
-        
-        **Powered by:**
-        - Moralis API (Transactions)
-        - Zapper API (Portfolio)
-        - OpenAI GPT-3.5 Turbo (Analysis)
-        
-        **Developer:** Emmanuel Ezeokeke
-        - [LinkedIn](https://linkedin.com/in/emma-ezeokeke/)
-        - [Twitter](https://x.com/Emarh_AI)
-        """)
+
 
 # Main Tabs
 tab1, tab2 = st.tabs(["📊 Analysis & Report", "🌍 Carbon Dashboard"])
@@ -480,24 +490,252 @@ with tab1:
     
     if st.session_state.analysis_complete and st.session_state.report_data:
         st.markdown("---")
-        st.markdown(st.session_state.report_data)
+        
+        # Enhanced Report Display with Animations
+        st.markdown("""
+        <style>
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .report-container {
+            animation: fadeInUp 0.8s ease-out;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 20px 0;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .report-container:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+        }
+        
+        .report-header {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+            animation: slideInLeft 0.6s ease-out;
+        }
+        
+        .report-header h2 {
+            margin: 0;
+            font-size: 1.8em;
+            font-weight: 600;
+        }
+        
+        .metric-card {
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 10px 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border-left: 4px solid #28a745;
+            animation: fadeInUp 0.8s ease-out;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            color: #333333 !important;
+        }
+        
+        .metric-card:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 8px 25px rgba(40, 167, 69, 0.3);
+        }
+        
+        .metric-card * {
+            color: #333333 !important;
+        }
+        
+        .metric-card h1, .metric-card h2, .metric-card h3, .metric-card h4, .metric-card h5, .metric-card h6 {
+            color: #28a745 !important;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, #e8f5e8 0%, #f0f8f0 100%);
+            border: 2px solid #28a745;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 15px 0;
+            animation: fadeInUp 0.8s ease-out;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            color: #155724 !important;
+        }
+        
+        .highlight-box:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 8px 25px rgba(40, 167, 69, 0.3);
+        }
+        
+        .highlight-box * {
+            color: #155724 !important;
+        }
+        
+        .highlight-box h1, .highlight-box h2, .highlight-box h3, .highlight-box h4, .highlight-box h5, .highlight-box h6 {
+            color: #28a745 !important;
+        }
+        
+        .section-header {
+            color: #28a745;
+            font-weight: 600;
+            font-size: 1.3em;
+            margin: 20px 0 10px 0;
+            padding-bottom: 5px;
+            border-bottom: 2px solid #28a745;
+            animation: slideInLeft 0.6s ease-out;
+            transition: transform 0.3s ease;
+        }
+        
+        .section-header:hover {
+            transform: translateX(5px);
+        }
+        
+        .download-section {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+            color: #333333 !important;
+            animation: fadeInUp 0.8s ease-out;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .download-section:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+        
+        .download-section * {
+            color: #333333 !important;
+        }
+        
+        /* Ensure all text in report containers has proper contrast */
+        .report-container {
+            color: #333333 !important;
+        }
+        
+        .report-container * {
+            color: #333333 !important;
+        }
+        
+        .report-container h1, .report-container h2, .report-container h3, 
+        .report-container h4, .report-container h5, .report-container h6 {
+            color: #28a745 !important;
+        }
+        
+        /* Override Streamlit's default text colors */
+        .stMarkdown {
+            color: #333333 !important;
+        }
+        
+        .stMarkdown * {
+            color: #333333 !important;
+        }
+        
+        /* Ensure proper contrast for all text elements */
+        p, div, span, li, ul, ol {
+            color: #333333 !important;
+        }
+        </style>
+        """, unsafe_allow_html=True)
+        
+        # Report Header with Animation
+        st.markdown("""
+        <div class="report-header">
+            <h2>🌱 Green Wallet Analysis Report</h2>
+            <p>Comprehensive blockchain portfolio intelligence & carbon footprint analysis</p>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        # Enhanced Report Content
+        st.markdown('<div class="report-container">', unsafe_allow_html=True)
+        
+        # Parse and display report with enhanced formatting
+        report_sections = st.session_state.report_data.split('## ')
+        for i, section in enumerate(report_sections):
+            if not section.strip():
+                continue
+                
+            lines = section.strip().split('\n')
+            title = lines[0].replace('#', '').strip()
+            
+            if title:
+                st.markdown(f'<div class="section-header">{title}</div>', unsafe_allow_html=True)
+                
+                content = '\n'.join(lines[1:]) if len(lines) > 1 else ''
+                
+                # Enhanced content formatting with proper text styling and staggered animations
+                animation_delay = i * 0.2  # Stagger animations by 0.2s per section
+                
+                if 'kg CO2' in content or 'carbon' in content.lower():
+                    st.markdown(f'<div class="highlight-box" style="animation-delay: {animation_delay}s;"><div style="color: #155724 !important; font-weight: 500;">{content}</div></div>', unsafe_allow_html=True)
+                else:
+                    st.markdown(f'<div class="metric-card" style="animation-delay: {animation_delay}s;"><div style="color: #333333 !important; font-weight: 500;">{content}</div></div>', unsafe_allow_html=True)
+                
+                # Also render the content as markdown for proper formatting
+                st.markdown(content)
+        
+        st.markdown('</div>', unsafe_allow_html=True)
+        
+        # Download Section with Enhanced Styling
+        st.markdown("""
+        <div class="download-section">
+            <h3>📥 Export Your Analysis</h3>
+            <p>Download your comprehensive report and data</p>
+        </div>
+        """, unsafe_allow_html=True)
         
         col1, col2 = st.columns(2)
         with col1:
             st.download_button(
                 "📥 Download Report (MD)",
                 st.session_state.report_data,
-                "onchain_carbon_report.md",
+                "green_wallet_report.md",
                 "text/markdown",
-                use_container_width=True
+                use_container_width=True,
+                key="download_md"
             )
         with col2:
             st.download_button(
                 "📊 Export Data (JSON)",
-                json.dumps({"wallet": wallet_address, "timestamp": str(Path("outputs/onchain_intelligence_report.md").stat().st_mtime)}, indent=2),
-                "analysis_data.json",
+                json.dumps({
+                    "wallet": wallet_address, 
+                    "timestamp": str(Path("outputs/onchain_intelligence_report.md").stat().st_mtime),
+                    "analysis_type": "green_wallet_carbon_analysis"
+                }, indent=2),
+                "green_wallet_data.json",
                 "application/json",
-                use_container_width=True
+                use_container_width=True,
+                key="download_json"
             )
 
 with tab2:
@@ -510,16 +748,40 @@ with tab2:
             col1, col2, col3, col4 = st.columns(4)
             
             with col1:
-                st.metric("Total CO2", f"{carbon_section.get('total_co2_kg', 0):.4f} kg")
+                st.markdown(f"""
+                <div class="carbon-metric" style="animation-delay: 0s;">
+                    <h3>Total CO2 Emissions</h3>
+                    <div class="value">{carbon_section.get('total_co2_kg', 0):.4f}</div>
+                    <div class="unit">kg CO2</div>
+                </div>
+                """, unsafe_allow_html=True)
             
             with col2:
-                st.metric("Energy", f"{carbon_section.get('total_energy_kwh', 0):.4f} kWh")
+                st.markdown(f"""
+                <div class="carbon-metric" style="animation-delay: 0.2s;">
+                    <h3>Energy Consumption</h3>
+                    <div class="value">{carbon_section.get('total_energy_kwh', 0):.4f}</div>
+                    <div class="unit">kWh</div>
+                </div>
+                """, unsafe_allow_html=True)
             
             with col3:
-                st.metric("Transactions", f"{carbon_section.get('total_transactions', 0):,}")
+                st.markdown(f"""
+                <div class="carbon-metric" style="animation-delay: 0.4s;">
+                    <h3>Total Transactions</h3>
+                    <div class="value">{carbon_section.get('total_transactions', 0):,}</div>
+                    <div class="unit">transactions</div>
+                </div>
+                """, unsafe_allow_html=True)
             
             with col4:
-                st.metric("Avg/Tx", f"{carbon_section.get('avg_per_tx', 0):.6f} kg")
+                st.markdown(f"""
+                <div class="carbon-metric" style="animation-delay: 0.6s;">
+                    <h3>Avg per Transaction</h3>
+                    <div class="value">{carbon_section.get('avg_per_tx', 0):.6f}</div>
+                    <div class="unit">kg CO2</div>
+                </div>
+                """, unsafe_allow_html=True)
             
             st.markdown("<br>", unsafe_allow_html=True)
             
@@ -543,10 +805,29 @@ with tab2:
             else:
                 st.markdown('<div class="status-alert carbon-high"><strong>🚨 High Impact:</strong> Implement reduction strategies immediately.</div>', unsafe_allow_html=True)
         else:
-            st.warning("⚠️ No carbon footprint data found. This could mean:")
-            st.info("• No transactions detected on analyzed networks\n• Wallet has minimal on-chain activity\n• Data extraction issue")
+            st.markdown("""
+            <div style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); 
+                        border-radius: 15px; padding: 30px; text-align: center; 
+                        border: 2px dashed #28a745;">
+                <h3 style="color: #28a745;">📊 No Carbon Data Available</h3>
+                <p style="color: #6c757d; font-size: 1.1em;">This could mean:</p>
+                <ul style="color: #6c757d; text-align: left; max-width: 400px; margin: 0 auto;">
+                    <li>No transactions detected on analyzed networks</li>
+                    <li>Wallet has minimal on-chain activity</li>
+                    <li>Data extraction issue</li>
+                </ul>
+            </div>
+            """, unsafe_allow_html=True)
     else:
-        st.info("Run an analysis to see carbon footprint metrics")
+        st.markdown("""
+        <div style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); 
+                    border-radius: 15px; padding: 30px; text-align: center; 
+                    border: 2px dashed #28a745;">
+            <h3 style="color: #28a745;">🌱 Ready for Analysis</h3>
+            <p style="color: #6c757d; font-size: 1.1em;">Run a wallet analysis to see carbon footprint data</p>
+            <p style="color: #6c757d;">Your blockchain activities will be translated into environmental metrics</p>
+        </div>
+        """, unsafe_allow_html=True)
 
 # Footer
 st.markdown("""
